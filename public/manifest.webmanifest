@@ -1,0 +1,17 @@
+{
+  "name": "PixelFlow Web",
+  "short_name": "PixelFlow",
+  "description": "Browser-first color sorting puzzle game built with Phaser 3.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#10264d",
+  "theme_color": "#1a3d7c",
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

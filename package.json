@@ -1,0 +1,23 @@
+{
+  "name": "pixelpower",
+  "version": "1.0.0",
+  "description": "PixelFlow Web browser puzzle game scaffold built with Phaser 3 and Vite.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0"
+  },
+  "keywords": [
+    "phaser",
+    "vite",
+    "browser-game",
+    "pwa"
+  ],
+  "author": "",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "phaser": "^3.90.0",
+    "vite": "^8.0.5"
+  }
+}
