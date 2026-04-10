@@ -39,6 +39,16 @@ const COLOR_THEMES = {
     accent: 0x63d98f,
     shadow: 0x1f6f4a,
   },
+  blue: {
+    label: 'Sky',
+    cubeTexture: 'cube-blue-top',
+    pigTexture: 'pig-blue',
+    pigTextureBack: 'pig-blue-back',
+    pigTextureLeft: 'pig-blue-left',
+    pigTextureRight: 'pig-blue-right',
+    accent: 0x77c2ff,
+    shadow: 0x163d73,
+  },
 };
 
 const REVEAL_PALETTE = [

@@ -22,6 +22,10 @@ export class BootScene extends Phaser.Scene {
     this.load.image('pig-green-back', '/assets/premium/pig-green-back-premium.png');
     this.load.image('pig-green-left', '/assets/premium/pig-green-left-premium.png');
     this.load.image('pig-green-right', '/assets/premium/pig-green-right-premium.png');
+    this.load.image('pig-blue', '/assets/premium/pig-blue.png');
+    this.load.image('pig-blue-back', '/assets/premium/pig-blue-back-premium.png');
+    this.load.image('pig-blue-left', '/assets/premium/pig-blue-left-premium.png');
+    this.load.image('pig-blue-right', '/assets/premium/pig-blue-right-premium.png');
     this.load.image('cube-blue', '/assets/premium/cube-blue.png');
     this.load.image('cube-red', '/assets/premium/cube-red.png');
     this.load.image('cube-yellow', '/assets/premium/cube-yellow.png');
@@ -66,6 +70,9 @@ export class BootScene extends Phaser.Scene {
     }
     if (!this.textures.exists('pig-green')) {
       this.createPigTexture(graphics, 'pig-green', 0x63d98f, 0xc7f8d9);
+    }
+    if (!this.textures.exists('pig-blue')) {
+      this.createPigTexture(graphics, 'pig-blue', 0x77c2ff, 0xcff0ff);
     }
     if (!this.textures.exists('cube-blue-top')) {
       this.createTopCubeTexture(graphics, 'cube-blue-top', 0x77c2ff, 0xcff0ff, 0x3e7fd8, 0x163d73);
