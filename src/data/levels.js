@@ -285,6 +285,7 @@ export const LEVELS = [
     id: 'heart-milestone',
     name: 'Heart',
     description: 'A classic heart shape in red and yellow.',
+    milestone: true,
     layout: [
       [null, 'red', 'red', null, 'red', 'red'],
       ['red', 'red', 'red', 'red', 'red', 'red'],
@@ -453,6 +454,7 @@ export const LEVELS = [
     id: 'chick-milestone',
     name: 'Chick',
     description: 'A fluffy yellow chick with green eyes.',
+    milestone: true,
     layout: [
       [null, null, 'yellow', 'yellow', 'yellow', null, null],
       [null, 'yellow', 'yellow', 'yellow', 'yellow', 'yellow', null],
@@ -639,6 +641,7 @@ export const LEVELS = [
     id: 'tree-milestone',
     name: 'Tree',
     description: 'A green tree with a yellow trunk.',
+    milestone: true,
     layout: [
       [null, null, 'green', 'green', 'green', null, null],
       [null, 'green', 'green', 'green', 'green', 'green', null],
@@ -846,6 +849,7 @@ export const LEVELS = [
     id: 'robot-milestone',
     name: 'Robot',
     description: 'A blue robot with yellow eyes and a red mouth.',
+    milestone: true,
     layout: [
       [null, null, 'blue', 'blue', 'blue', 'blue', null, null],
       [null, 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', null],
@@ -1047,6 +1051,7 @@ export const LEVELS = [
     id: 'crown-milestone',
     name: 'Crown',
     description: 'A royal yellow crown with red jewels.',
+    milestone: true,
     layout: [
       [null, 'yellow', null, 'yellow', null, 'yellow', null, null],
       ['yellow', 'yellow', 'yellow', 'yellow', 'yellow', 'yellow', 'yellow', null],
