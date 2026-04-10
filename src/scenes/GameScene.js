@@ -739,8 +739,8 @@ export class GameScene extends Phaser.Scene {
           id: `cube-${cubeId}`,
           row: rowIndex,
           col: colIndex,
-          color,
-          alive: true,
+          color: color ?? 'red',
+          alive: color !== null,
           reservedBy: null,
         });
         cubeId += 1;
@@ -764,7 +764,7 @@ export class GameScene extends Phaser.Scene {
       jamWarnings: 0,
       jamLimit: 2,
       destroyedCount: 0,
-      totalCubes: board.length,
+      totalCubes: board.filter(c => c.alive).length,
       lastAction: 'Level initialized',
     };
   }
