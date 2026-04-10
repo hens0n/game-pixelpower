@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview --host 0.0.0.0"
+    "preview": "vite preview --host 0.0.0.0",
+    "generate": "node tools/generator/index.js",
+    "preview-levels": "npx serve tools/preview"
   },
   "keywords": [
     "phaser",
