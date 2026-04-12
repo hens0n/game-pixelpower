@@ -12,10 +12,12 @@ export function formatExport(accepted) {
     const benchStr = c.bench
       .map(p => "      { color: '" + p.color + "', ammo: " + p.ammo + ' }')
       .join(',\n');
+    const milestone = c.milestone || c.meta?.milestone;
     return '  {\n' +
       "    id: '" + c.id.replace(/'/g, "\\'") + "',\n" +
       "    name: '" + c.name.replace(/'/g, "\\'") + "',\n" +
       "    description: '" + c.description.replace(/'/g, "\\'") + "',\n" +
+      (milestone ? '    milestone: true,\n' : '') +
       '    layout: [\n' + layoutStr + ',\n    ],\n' +
       '    bench: [\n' + benchStr + ',\n    ],\n' +
       '  }';

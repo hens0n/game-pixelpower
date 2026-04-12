@@ -43,3 +43,10 @@ test('all patterns produce boards with every requested color', () => {
     }
   }
 });
+
+test('checkers pattern is distinct from stripes', () => {
+  const colors = ['red', 'yellow', 'green', 'blue'];
+  const stripes = generateBoard({ rows: 6, cols: 6, colors, pattern: 'stripes' });
+  const checkers = generateBoard({ rows: 6, cols: 6, colors, pattern: 'checkers' });
+  assert.notDeepEqual(checkers, stripes);
+});

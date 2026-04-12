@@ -43,6 +43,40 @@ function generateName(pattern) {
   return `${adj} ${noun}`;
 }
 
+function getLayoutKey(layout) {
+  return JSON.stringify(layout);
+}
+
+export function getTierGenerationCounts(count, tierNames = Object.keys(TIERS)) {
+  const weightedTiers = tierNames.map((name) => {
+    const tier = TIERS[name];
+    if (!tier) {
+      throw new Error(`Unknown tier: ${name}`);
+    }
+    const weight = tier.levelRange[1] - tier.levelRange[0] + 1;
+    return { name, weight };
+  });
+
+  const totalWeight = weightedTiers.reduce((sum, tier) => sum + tier.weight, 0);
+  const rawCounts = weightedTiers.map((tier) => (count * tier.weight) / totalWeight);
+  const counts = rawCounts.map((value) => Math.floor(value));
+  let remaining = count - counts.reduce((sum, value) => sum + value, 0);
+
+  const rankedFractions = rawCounts
+    .map((value, index) => ({
+      index,
+      fraction: value - counts[index],
+    }))
+    .sort((a, b) => b.fraction - a.fraction || a.index - b.index);
+
+  for (let i = 0; i < rankedFractions.length && remaining > 0; i += 1) {
+    counts[rankedFractions[i].index] += 1;
+    remaining -= 1;
+  }
+
+  return Object.fromEntries(weightedTiers.map((tier, index) => [tier.name, counts[index]]));
+}
+
 function generateCandidate(tier) {
   const [rows, cols] = pick(tier.gridSizes);
   const colorCount = pick(tier.colorCounts);
@@ -92,6 +126,7 @@ function generateMilestoneCandidate(levelNumber) {
     id: slugify(ms.name) + '-milestone',
     name: ms.name,
     description: ms.description,
+    milestone: true,
     layout: ms.layout,
     bench,
     meta: {
@@ -120,6 +155,10 @@ function main() {
   });
 
   const count = parseInt(values.count, 10);
+  if (!Number.isInteger(count) || count <= 0) {
+    console.error(`Count must be a positive integer: ${values.count}`);
+    process.exit(1);
+  }
 
   if (values.milestone) {
     const levelNum = parseInt(values.milestone, 10);
@@ -135,8 +174,12 @@ function main() {
   }
 
   const tierNames = values.tier === 'all' ? Object.keys(TIERS) : [values.tier];
+  const tierCounts = values.tier === 'all'
+    ? getTierGenerationCounts(count, tierNames)
+    : { [values.tier]: count };
   const candidates = [];
   const maxRetries = 20;
+  const seenLayouts = new Set();
 
   for (const tierName of tierNames) {
     const tier = TIERS[tierName];
@@ -145,15 +188,23 @@ function main() {
       process.exit(1);
     }
 
-    const tierCount = values.tier === 'all'
-      ? Math.round(count * (tier.levelRange[1] - tier.levelRange[0] + 1) / 40)
-      : count;
+    const tierCount = tierCounts[tierName];
 
     let generated = 0;
     let retries = 0;
     while (generated < tierCount) {
       const candidate = generateCandidate(tier);
       if (candidate) {
+        const layoutKey = getLayoutKey(candidate.layout);
+        if (seenLayouts.has(layoutKey)) {
+          retries++;
+          if (retries > maxRetries) {
+            console.warn(`\nCould only generate ${generated}/${tierCount} for ${tierName} (duplicate layouts)`);
+            break;
+          }
+          continue;
+        }
+        seenLayouts.add(layoutKey);
         candidates.push(candidate);
         generated++;
         retries = 0;
@@ -174,4 +225,6 @@ function main() {
   console.log(`\nGenerated ${candidates.length} candidates -> ${OUTPUT_FILE}`);
 }
 
-main();
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  main();
+}
