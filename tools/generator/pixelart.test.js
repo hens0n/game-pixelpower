@@ -1,6 +1,7 @@
 import { strict as assert } from 'node:assert';
 import { test } from 'node:test';
 import { MILESTONES, getMilestone } from './pixelart.js';
+import { COLORS } from './difficulty.js';
 
 test('MILESTONES has 5 entries at levels 11, 21, 31, 41, 50', () => {
   const levels = Object.keys(MILESTONES).map(Number).sort((a, b) => a - b);
@@ -8,13 +9,12 @@ test('MILESTONES has 5 entries at levels 11, 21, 31, 41, 50', () => {
 });
 
 test('each milestone has name, layout, and valid colors', () => {
-  const validColors = ['red', 'yellow', 'green', 'blue'];
   for (const [level, ms] of Object.entries(MILESTONES)) {
     assert.ok(ms.name, `level ${level} has name`);
     assert.ok(ms.layout.length > 0, `level ${level} has layout`);
     for (const row of ms.layout) {
       for (const cell of row) {
-        if (cell !== null) assert.ok(validColors.includes(cell), `level ${level} has invalid color: ${cell}`);
+        if (cell !== null) assert.ok(COLORS.includes(cell), `level ${level} has invalid color: ${cell}`);
       }
     }
   }

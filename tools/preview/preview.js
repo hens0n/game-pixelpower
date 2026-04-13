@@ -6,6 +6,9 @@ const COLOR_MAP = {
   yellow: '#ffd74f',
   green: '#6be49a',
   blue: '#77c2ff',
+  purple: '#b15cff',
+  orange: '#ff9f40',
+  teal: '#2fd6c4',
 };
 
 const TIER_CLASSES = {

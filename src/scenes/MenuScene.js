@@ -18,6 +18,9 @@ const PREVIEW_COLORS = {
   yellow: 0xffd74f,
   green: 0x6be49a,
   blue: 0x77c2ff,
+  purple: 0xb15cff,
+  orange: 0xff9f40,
+  teal: 0x2fd6c4,
 };
 
 export class MenuScene extends Phaser.Scene {
