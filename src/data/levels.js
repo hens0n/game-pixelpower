@@ -1,3 +1,5 @@
+import { pixelArtLevels } from './pixel-art-levels.js';
+
 export const LEVELS = [
   {
     id: 'dockside-warmup',
@@ -282,3 +284,5 @@ export const LEVELS = [
     ],
   },
 ];
+
+LEVELS.push(...pixelArtLevels);
