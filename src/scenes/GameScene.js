@@ -694,7 +694,8 @@ export class GameScene extends Phaser.Scene {
     container.add([frameShadow, panel, outer, inner]);
 
     this.levelConfig.layout.forEach((row, rowIndex) => {
-      row.forEach((_, colIndex) => {
+      row.forEach((cellColor, colIndex) => {
+        if (cellColor === null) return;
         const x = this.boardOrigin.x + colIndex * this.cellSize;
         const y = this.boardOrigin.y + rowIndex * this.cellSize;
         const plate = this.add.rectangle(x, y, this.cubeSize + 10, this.cubeSize + 10, 0x0b1d34, 0.72)
@@ -815,6 +816,7 @@ export class GameScene extends Phaser.Scene {
 
     this.levelConfig.layout.forEach((row, rowIndex) => {
       row.forEach((color, colIndex) => {
+        if (color === null) return;
         board.push({
           id: `cube-${cubeId}`,
           row: rowIndex,
