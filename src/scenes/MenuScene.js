@@ -18,6 +18,12 @@ const PREVIEW_COLORS = {
   yellow: 0xffd74f,
   green: 0x6be49a,
   blue: 0x77c2ff,
+  brown: 0x8b5a3c,
+  pink: 0xffa6cf,
+  white: 0xf2f6fb,
+  black: 0x2b2f37,
+  gray: 0x9ca3af,
+  tan: 0xe6d2ab,
 };
 
 export class MenuScene extends Phaser.Scene {

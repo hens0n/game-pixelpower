@@ -1,4 +1,4 @@
-export const COLORS = ['red', 'yellow', 'green', 'blue'];
+export const COLORS = ['red', 'yellow', 'green', 'blue', 'brown', 'pink', 'white', 'black', 'gray', 'tan'];
 
 export const TIERS = {
   easy: {
@@ -36,7 +36,7 @@ export const TIERS = {
     levelRange: [41, 50],
     gridSizes: [[8, 8]],
     colors: COLORS,
-    colorCounts: [4],
+    colorCounts: [4, 5, 6, 7, 8, 9, 10],
     ammoMultiplier: 1.0,
     patterns: ['dense', 'mixed'],
     benchRange: [12, 16],
