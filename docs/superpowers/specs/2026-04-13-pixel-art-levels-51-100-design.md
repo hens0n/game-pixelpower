@@ -13,29 +13,29 @@ Add 50 new handcrafted-quality pixel art levels (51–100) to Pixel Power. Each 
 
 ## Color Palette
 
-### Existing (4)
+### Existing (10)
 
 | Color  | Label | Accent    | Shadow    |
 |--------|-------|-----------|-----------|
 | red    | Ruby  | 0xff6b6b  | 0x7d2534  |
 | yellow | Gold  | 0xffd34d  | 0x7f6214  |
 | green  | Mint  | 0x63d98f  | 0x1f6f4a  |
-| blue   | —     | (varied)  | (varied)  |
+| blue   | Sky   | 0x77c2ff  | 0x163d73  |
+| brown  | Cocoa | 0x8b5a3c  | 0x3b2113  |
+| pink   | Blush | 0xffa6cf  | 0x7d2d57  |
+| white  | Pearl | 0xf2f6fb  | 0x7d8b99  |
+| black  | Onyx  | 0x2b2f37  | 0x080b10  |
+| gray   | Slate | 0x9ca3af  | 0x47505c  |
+| tan    | Sand  | 0xe6d2ab  | 0x7b6541  |
 
-### New (8)
+### New (2)
 
 | Color  | Label  | Accent    | Shadow    |
 |--------|--------|-----------|-----------|
 | orange | Amber  | 0xffa54d  | 0x7f4a14  |
 | purple | Violet | 0xa78bfa  | 0x4a2d8a  |
-| brown  | Cocoa  | 0xb5651d  | 0x5a3010  |
-| pink   | Rose   | 0xf78da7  | 0x7a3050  |
-| white  | Pearl  | 0xf0f0f0  | 0x787878  |
-| black  | Onyx   | 0x333333  | 0x111111  |
-| gray   | Slate  | 0x999999  | 0x4a4a4a  |
-| tan    | Sand   | 0xd4a574  | 0x6a5030  |
 
-Each new color requires 5 textures: 1 cube-top + 4 pig directions (front, back, left, right). Total: 40 new sprite textures. Initial implementation uses programmatic tinting of existing sprites.
+Each new color requires 5 textures: 1 cube-top + 4 pig directions (front, back, left, right). Total: 10 new sprite textures. Initial implementation uses programmatic tinting of existing sprites.
 
 ## Level Subjects (50 levels)
 
@@ -235,20 +235,20 @@ ANTHROPIC_API_KEY=sk-... node tools/generator/generate-pixel-art-levels.js --out
 | File | Change |
 |------|--------|
 | `src/data/levels.js` | Import and append pixel-art-levels |
-| `src/scenes/GameScene.js` | Add 8 new color theme definitions (accent, shadow, label) and register for rendering |
-| `src/scenes/BootScene.js` | Load new cube and pig textures for 8 new colors |
+| `src/scenes/GameScene.js` | Add 2 new color theme definitions (orange, purple) |
+| `src/scenes/BootScene.js` | Load new cube and pig textures for 2 new colors |
 | `.gitignore` | Add `.superpowers/` |
 
 ## Sprite Assets
 
-40 new textures needed (8 colors × 5 per color):
+10 new textures needed (2 colors × 5 per color):
 - `cube-{color}-top` — cube face texture
 - `pig-{color}` — front-facing pig
 - `pig-{color}-back` — back-facing pig
 - `pig-{color}-left` — left-facing pig
 - `pig-{color}-right` — right-facing pig
 
-Initial implementation generates these programmatically by tinting existing red/yellow/green sprites. Art can be refined later with custom sprites.
+Colors: orange, purple. Initial implementation generates these programmatically by tinting existing sprites (BootScene already has createPigTexture and createTopCubeTexture helpers). Art can be refined later with custom sprites.
 
 ## Out of Scope
 
