@@ -1,4 +1,4 @@
-export const COLORS = ['red', 'yellow', 'green', 'blue', 'brown', 'pink', 'white', 'black', 'gray', 'tan'];
+export const COLORS = ['red', 'yellow', 'green', 'blue', 'brown', 'pink', 'white', 'black', 'gray', 'tan', 'orange', 'purple'];
 
 export const TIERS = {
   easy: {

@@ -137,6 +137,18 @@ export class BootScene extends Phaser.Scene {
     if (!this.textures.exists('cube-tan-top')) {
       this.createTopCubeTexture(graphics, 'cube-tan-top', 0xe6d2ab, 0xf8edd8, 0xc7aa78, 0x7b6541);
     }
+    if (!this.textures.exists('pig-orange')) {
+      this.createPigTexture(graphics, 'pig-orange', 0xffa54d, 0xffd19a);
+    }
+    if (!this.textures.exists('pig-purple')) {
+      this.createPigTexture(graphics, 'pig-purple', 0xa78bfa, 0xd4c5fd);
+    }
+    if (!this.textures.exists('cube-orange-top')) {
+      this.createTopCubeTexture(graphics, 'cube-orange-top', 0xffa54d, 0xffd19a, 0xd47a28, 0x7f4a14);
+    }
+    if (!this.textures.exists('cube-purple-top')) {
+      this.createTopCubeTexture(graphics, 'cube-purple-top', 0xa78bfa, 0xd4c5fd, 0x7b5ec7, 0x4a2d8a);
+    }
     if (!this.textures.exists('cube-red-top')) {
       this.createTopCubeTexture(graphics, 'cube-red-top', 0xff6e7a, 0xffd2d7, 0xdb4358, 0x6a1f31);
     }

@@ -109,6 +109,26 @@ const COLOR_THEMES = {
     accent: 0xe6d2ab,
     shadow: 0x7b6541,
   },
+  orange: {
+    label: 'Amber',
+    cubeTexture: 'cube-orange-top',
+    pigTexture: 'pig-orange',
+    pigTextureBack: 'pig-orange-back',
+    pigTextureLeft: 'pig-orange-left',
+    pigTextureRight: 'pig-orange-right',
+    accent: 0xffa54d,
+    shadow: 0x7f4a14,
+  },
+  purple: {
+    label: 'Violet',
+    cubeTexture: 'cube-purple-top',
+    pigTexture: 'pig-purple',
+    pigTextureBack: 'pig-purple-back',
+    pigTextureLeft: 'pig-purple-left',
+    pigTextureRight: 'pig-purple-right',
+    accent: 0xa78bfa,
+    shadow: 0x4a2d8a,
+  },
 };
 
 const REVEAL_PALETTE = [
