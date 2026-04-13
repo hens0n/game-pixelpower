@@ -19,5 +19,8 @@
   "dependencies": {
     "phaser": "^3.90.0",
     "vite": "^8.0.5"
+  },
+  "devDependencies": {
+    "@anthropic-ai/sdk": "^0.88.0"
   }
 }
