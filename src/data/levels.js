@@ -352,7 +352,7 @@ export const LEVELS = [
   },
   {
     id: 'column-arc-370',
-    name: 'Column Arc',
+    name: 'Column Rise',
     description: 'A easy-tier columns puzzle on a 5x6 grid.',
     layout: [
       ['red', 'yellow', 'green', 'red', 'yellow'],
@@ -932,7 +932,7 @@ export const LEVELS = [
   },
   {
     id: 'blend-wave-212',
-    name: 'Blend Wave',
+    name: 'Blend Surge',
     description: 'A expert-tier mixed puzzle on a 8x8 grid.',
     layout: [
       ['red', 'red', 'yellow', 'yellow', 'green', 'green', 'blue', 'blue'],

@@ -5,9 +5,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "test": "node --test",
     "preview": "vite preview --host 0.0.0.0",
     "generate": "node tools/generator/index.js",
-    "preview-levels": "npx serve tools/preview"
+    "preview-levels": "serve ."
   },
   "keywords": [
     "phaser",
@@ -21,5 +22,8 @@
   "dependencies": {
     "phaser": "^3.90.0",
     "vite": "^8.0.5"
+  },
+  "devDependencies": {
+    "serve": "^14.2.6"
   }
 }

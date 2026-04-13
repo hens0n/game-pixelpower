@@ -1118,7 +1118,7 @@ Add to the `"scripts"` section in `package.json`:
 
 ```json
 "generate": "node tools/generator/index.js",
-"preview": "npx serve tools/preview"
+"preview-levels": "serve ."
 ```
 
 - [ ] **Step 3: Test the CLI end-to-end**

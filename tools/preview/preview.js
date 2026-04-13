@@ -20,6 +20,11 @@ let decisions = loadDecisions();
 let selectedIndex = -1;
 let activeFilter = 'all';
 
+const CANDIDATE_PATHS = [
+  '/output/candidates.json',
+  '../../output/candidates.json',
+];
+
 function loadDecisions() {
   try {
     return JSON.parse(localStorage.getItem('pp-preview-decisions') || '{}');
@@ -41,9 +46,16 @@ function setDecision(id, status) {
 
 async function loadCandidates() {
   try {
-    const res = await fetch('../../output/candidates.json');
-    if (!res.ok) throw new Error('Not found');
-    candidates = await res.json();
+    let loaded = null;
+    for (const path of CANDIDATE_PATHS) {
+      const res = await fetch(path);
+      if (res.ok) {
+        loaded = await res.json();
+        break;
+      }
+    }
+    if (!loaded) throw new Error('Not found');
+    candidates = loaded;
   } catch {
     const input = document.createElement('input');
     input.type = 'file';
@@ -58,7 +70,7 @@ async function loadCandidates() {
     const msg = document.createElement('div');
     msg.style.textAlign = 'center';
     const p1 = document.createElement('p');
-    p1.textContent = 'Could not load output/candidates.json';
+    p1.textContent = 'Could not auto-load output/candidates.json';
     const p2 = document.createElement('p');
     p2.textContent = 'Drop a JSON file or click to browse:';
     p2.style.marginTop = '8px';

@@ -16,3 +16,17 @@ test('LEVELS contains no duplicate layouts', () => {
     seen.set(key, { level: index + 1, id: level.id });
   });
 });
+
+test('LEVELS contains no duplicate names', () => {
+  const seen = new Map();
+
+  LEVELS.forEach((level, index) => {
+    const existing = seen.get(level.name);
+    assert.equal(
+      existing,
+      undefined,
+      `duplicate name at level ${index + 1} (${level.id}), already used by level ${existing?.level} (${existing?.id})`,
+    );
+    seen.set(level.name, { level: index + 1, id: level.id });
+  });
+});

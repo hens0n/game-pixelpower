@@ -90,6 +90,7 @@ export class GameScene extends Phaser.Scene {
   constructor() {
     super('GameScene');
     this.state = null;
+    this.boardLookup = [];
     this.levelConfig = null;
     this.currentLevelIndex = 0;
     this.undoStack = [];
@@ -491,6 +492,7 @@ export class GameScene extends Phaser.Scene {
     this.activeProjectiles.forEach((projectile) => projectile.destroy());
     this.activeProjectiles = [];
     this.state = this.createInitialState();
+    this.rebuildBoardLookup();
     this.undoStack = [];
     this.selectedPig = { source: 'bench', index: this.findNextBenchColumn(0, this.state.bench) };
     this.overlay.setVisible(false);
@@ -773,6 +775,13 @@ export class GameScene extends Phaser.Scene {
     return JSON.parse(JSON.stringify(snapshot));
   }
 
+  rebuildBoardLookup() {
+    this.boardLookup = Array.from({ length: this.gridRows }, () => Array(this.gridCols).fill(null));
+    this.state.board.forEach((cube) => {
+      this.boardLookup[cube.row][cube.col] = cube;
+    });
+  }
+
   createBenchColumns(pigs) {
     const columns = Array.from({ length: BENCH_COLUMNS }, () => []);
     pigs.forEach((pig, index) => {
@@ -868,6 +877,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     this.state = this.cloneState(this.undoStack.pop());
+    this.rebuildBoardLookup();
     if (this.getBenchCount() > 0) {
       this.selectedPig = { source: 'bench', index: this.findNextBenchColumn(this.selectedPig.index) };
     } else if (this.state.queue.length > 0) {
@@ -1105,7 +1115,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   getCubeAt(row, col) {
-    return this.state.board.find((cube) => cube.row === row && cube.col === col);
+    return this.boardLookup[row]?.[col] ?? null;
   }
 
   getFirstVisibleCubeInColumn(col, rowOrder) {

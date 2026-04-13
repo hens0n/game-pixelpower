@@ -99,7 +99,7 @@ export class MenuScene extends Phaser.Scene {
       fontStyle: 'bold',
     }).setOrigin(0.5);
 
-    this.add.text(width * 0.5, 286, 'Handcrafted conveyor puzzles with strict line shots, premium pixels, and more boards coming.', {
+    this.add.text(width * 0.5, 286, 'A 50-level conveyor puzzle campaign with strict line shots, premium pixels, and milestone picture boards.', {
       fontFamily: 'Trebuchet MS',
       fontSize: '28px',
       color: '#31548b',

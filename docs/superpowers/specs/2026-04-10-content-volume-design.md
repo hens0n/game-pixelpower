@@ -91,7 +91,7 @@ Output: `output/candidates.json`
 
 ## Preview & Curation Tool
 
-A static HTML page that loads `output/candidates.json` and presents candidates for review.
+A static HTML page that loads `output/candidates.json` and presents candidates for review. The recommended workflow is to serve the repository root and open `/tools/preview/` so both the preview assets and `output/candidates.json` are available.
 
 ### Layout
 
@@ -101,7 +101,7 @@ A static HTML page that loads `output/candidates.json` and presents candidates f
 
 ### Features
 
-- Loads `output/candidates.json` directly.
+- Loads `output/candidates.json` directly when the repo root is served, and falls back to manual JSON upload if the file is unavailable.
 - Tier filter badges for quick navigation between difficulty bands.
 - Canvas board renderer matching the game's color palette.
 - Accept/Reject state persists in localStorage across page reloads.
