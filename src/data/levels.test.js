@@ -17,6 +17,33 @@ test('LEVELS contains no duplicate layouts', () => {
   });
 });
 
+test('LEVELS ammo exactly matches pixel counts per color', () => {
+  LEVELS.forEach((level, index) => {
+    const pixelCounts = {};
+    for (const row of level.layout) {
+      for (const cell of row) {
+        if (cell !== null) pixelCounts[cell] = (pixelCounts[cell] || 0) + 1;
+      }
+    }
+
+    const ammoCounts = {};
+    for (const pig of level.bench) {
+      ammoCounts[pig.color] = (ammoCounts[pig.color] || 0) + pig.ammo;
+    }
+
+    const allColors = new Set([...Object.keys(pixelCounts), ...Object.keys(ammoCounts)]);
+    for (const color of allColors) {
+      const pixels = pixelCounts[color] || 0;
+      const ammo = ammoCounts[color] || 0;
+      assert.equal(
+        ammo,
+        pixels,
+        `level ${index + 1} (${level.id}): ${color} has ${ammo} ammo but ${pixels} pixels`,
+      );
+    }
+  });
+});
+
 test('LEVELS contains no duplicate names', () => {
   const seen = new Map();
 
