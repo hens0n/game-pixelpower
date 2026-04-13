@@ -5,7 +5,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview --host 0.0.0.0"
+    "test": "node --test",
+    "preview": "vite preview --host 0.0.0.0",
+    "generate": "node tools/generator/index.js",
+    "preview-levels": "serve ."
   },
   "keywords": [
     "phaser",
@@ -21,6 +24,7 @@
     "vite": "^8.0.5"
   },
   "devDependencies": {
-    "@anthropic-ai/sdk": "^0.88.0"
+    "@anthropic-ai/sdk": "^0.88.0",
+    "serve": "^14.2.6"
   }
 }

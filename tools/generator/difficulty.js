@@ -1,4 +1,4 @@
-export const COLORS = ['red', 'yellow', 'green', 'blue', 'brown', 'pink', 'white', 'black', 'gray', 'tan', 'orange', 'purple'];
+export const COLORS = ['red', 'yellow', 'green', 'blue', 'brown', 'pink', 'white', 'black', 'gray', 'tan', 'orange', 'purple', 'teal'];
 
 export const TIERS = {
   easy: {
@@ -7,7 +7,7 @@ export const TIERS = {
     gridSizes: [[5, 5], [6, 5]],
     colors: COLORS.slice(0, 3),
     colorCounts: [2, 3],
-    ammoMultiplier: 1.3,
+    ammoMultiplier: 1.0,
     patterns: ['columns', 'rows'],
     benchRange: [5, 7],
   },
@@ -17,7 +17,7 @@ export const TIERS = {
     gridSizes: [[6, 6], [7, 6]],
     colors: COLORS.slice(0, 3),
     colorCounts: [3],
-    ammoMultiplier: 1.15,
+    ammoMultiplier: 1.0,
     patterns: ['blocks', 'stripes'],
     benchRange: [7, 10],
   },
@@ -27,7 +27,7 @@ export const TIERS = {
     gridSizes: [[7, 7], [8, 7]],
     colors: COLORS.slice(0, 4),
     colorCounts: [3, 4],
-    ammoMultiplier: 1.05,
+    ammoMultiplier: 1.0,
     patterns: ['checkers', 'spirals'],
     benchRange: [10, 14],
   },

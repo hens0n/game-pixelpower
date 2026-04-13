@@ -8,23 +8,14 @@ function countColors(layout) {
   return counts;
 }
 
-export function buildBench(layout, { ammoMultiplier, benchRange }) {
+export function buildBench(layout, { benchRange }) {
   const colorCounts = countColors(layout);
   const colors = Object.keys(colorCounts);
-  const totalCubes = Object.values(colorCounts).reduce((a, b) => a + b, 0);
-  const totalAmmo = Math.round(totalCubes * ammoMultiplier);
+  const totalAmmo = Object.values(colorCounts).reduce((a, b) => a + b, 0);
   const [minPigs, maxPigs] = benchRange;
   const pigCount = Math.min(maxPigs, Math.max(minPigs, Math.min(totalAmmo, minPigs + Math.floor(Math.random() * (maxPigs - minPigs + 1)))));
 
-  const colorAmmo = {};
-  let allocated = 0;
-  for (const color of colors) {
-    const share = Math.round((colorCounts[color] / totalCubes) * totalAmmo);
-    colorAmmo[color] = Math.max(1, share);
-    allocated += colorAmmo[color];
-  }
-  const largestColor = colors.reduce((a, b) => colorAmmo[a] >= colorAmmo[b] ? a : b);
-  colorAmmo[largestColor] += totalAmmo - allocated;
+  const colorAmmo = { ...colorCounts };
 
   const pigs = [];
   for (const color of colors) {

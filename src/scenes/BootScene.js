@@ -50,6 +50,18 @@ export class BootScene extends Phaser.Scene {
     this.load.image('pig-tan-back', '/assets/premium/pig-tan-back-premium.png');
     this.load.image('pig-tan-left', '/assets/premium/pig-tan-left-premium.png');
     this.load.image('pig-tan-right', '/assets/premium/pig-tan-right-premium.png');
+    this.load.image('pig-orange', '/assets/premium/pig-orange.png');
+    this.load.image('pig-orange-back', '/assets/premium/pig-orange-back-premium.png');
+    this.load.image('pig-orange-left', '/assets/premium/pig-orange-left-premium.png');
+    this.load.image('pig-orange-right', '/assets/premium/pig-orange-right-premium.png');
+    this.load.image('pig-purple', '/assets/premium/pig-purple.png');
+    this.load.image('pig-purple-back', '/assets/premium/pig-purple-back-premium.png');
+    this.load.image('pig-purple-left', '/assets/premium/pig-purple-left-premium.png');
+    this.load.image('pig-purple-right', '/assets/premium/pig-purple-right-premium.png');
+    this.load.image('pig-teal', '/assets/premium/pig-teal.png');
+    this.load.image('pig-teal-back', '/assets/premium/pig-teal-back-premium.png');
+    this.load.image('pig-teal-left', '/assets/premium/pig-teal-left-premium.png');
+    this.load.image('pig-teal-right', '/assets/premium/pig-teal-right-premium.png');
     this.load.image('cube-blue', '/assets/premium/cube-blue.png');
     this.load.image('cube-red', '/assets/premium/cube-red.png');
     this.load.image('cube-yellow', '/assets/premium/cube-yellow.png');
@@ -116,6 +128,15 @@ export class BootScene extends Phaser.Scene {
     if (!this.textures.exists('pig-tan')) {
       this.createPigTexture(graphics, 'pig-tan', 0xe6d2ab, 0xf1e4c9);
     }
+    if (!this.textures.exists('pig-orange')) {
+      this.createPigTexture(graphics, 'pig-orange', 0xffa54d, 0xffd19a);
+    }
+    if (!this.textures.exists('pig-purple')) {
+      this.createPigTexture(graphics, 'pig-purple', 0xa78bfa, 0xd4c5fd);
+    }
+    if (!this.textures.exists('pig-teal')) {
+      this.createPigTexture(graphics, 'pig-teal', 0x2fd6c4, 0xb4fff4);
+    }
     if (!this.textures.exists('cube-blue-top')) {
       this.createTopCubeTexture(graphics, 'cube-blue-top', 0x77c2ff, 0xcff0ff, 0x3e7fd8, 0x163d73);
     }
@@ -137,17 +158,14 @@ export class BootScene extends Phaser.Scene {
     if (!this.textures.exists('cube-tan-top')) {
       this.createTopCubeTexture(graphics, 'cube-tan-top', 0xe6d2ab, 0xf8edd8, 0xc7aa78, 0x7b6541);
     }
-    if (!this.textures.exists('pig-orange')) {
-      this.createPigTexture(graphics, 'pig-orange', 0xffa54d, 0xffd19a);
-    }
-    if (!this.textures.exists('pig-purple')) {
-      this.createPigTexture(graphics, 'pig-purple', 0xa78bfa, 0xd4c5fd);
-    }
     if (!this.textures.exists('cube-orange-top')) {
       this.createTopCubeTexture(graphics, 'cube-orange-top', 0xffa54d, 0xffd19a, 0xd47a28, 0x7f4a14);
     }
     if (!this.textures.exists('cube-purple-top')) {
       this.createTopCubeTexture(graphics, 'cube-purple-top', 0xa78bfa, 0xd4c5fd, 0x7b5ec7, 0x4a2d8a);
+    }
+    if (!this.textures.exists('cube-teal-top')) {
+      this.createTopCubeTexture(graphics, 'cube-teal-top', 0x2fd6c4, 0xbafff6, 0x16aa9c, 0x0d5b59);
     }
     if (!this.textures.exists('cube-red-top')) {
       this.createTopCubeTexture(graphics, 'cube-red-top', 0xff6e7a, 0xffd2d7, 0xdb4358, 0x6a1f31);
