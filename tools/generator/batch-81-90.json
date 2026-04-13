@@ -1,0 +1,123 @@
+{
+  "81": [
+    [null, null, null, "yellow", "blue", "yellow", null, null, null, null],
+    [null, null, null, "yellow", "blue", "yellow", null, null, null, null],
+    [null, "yellow", null, "yellow", "blue", "yellow", null, "yellow", null, null],
+    [null, "yellow", null, "yellow", "blue", "yellow", null, "yellow", null, null],
+    ["yellow", "blue", "yellow", "blue", "blue", "blue", "yellow", "blue", "yellow", null],
+    [null, "blue", null, "blue", "blue", "blue", null, "blue", null, null],
+    [null, "blue", null, "blue", "blue", "blue", null, "blue", null, null],
+    [null, "blue", null, "blue", "blue", "blue", null, "blue", null, null],
+    [null, "blue", null, "blue", "blue", "blue", null, "blue", null, null],
+    ["white", "white", "white", "white", "white", "white", "white", "white", "white", null]
+  ],
+  "82": [
+    [null, null, null, null, "blue", "blue", null, null, null, null],
+    [null, null, null, "gray", "gray", "blue", "blue", null, null, null],
+    [null, null, "gray", "gray", "white", "gray", "blue", "blue", null, null],
+    [null, "gray", "gray", "white", "white", "gray", "gray", "blue", null, null],
+    [null, "gray", "white", "white", "gray", "gray", "gray", null, null, null],
+    ["blue", "gray", "gray", "gray", "gray", "gray", null, null, null, null],
+    ["blue", "blue", "gray", "gray", "gray", null, null, null, null, null],
+    [null, "blue", "blue", "gray", null, null, null, null, null, null],
+    [null, null, "blue", "blue", "blue", "blue", "blue", null, null, null],
+    [null, null, null, "blue", "blue", "blue", "blue", "blue", null, null]
+  ],
+  "83": [
+    [null, "white", "white", "white", "white", "white", "white", "white", null],
+    ["white", "white", "gray", "white", "white", "white", "gray", "white", "white"],
+    ["white", "gray", "white", "white", "white", "white", "white", "gray", "white"],
+    ["white", "white", "white", "white", "white", "white", "white", "white", "white"],
+    ["white", "white", "white", "white", "white", "white", "white", "white", "white"],
+    ["white", "white", "white", "white", "white", "white", "white", "white", "white"],
+    ["white", "white", "white", "gray", "white", "gray", "white", "white", "white"],
+    ["white", "white", null, null, null, null, null, "white", "white"],
+    ["blue", "blue", null, null, null, null, null, "blue", "blue"]
+  ],
+  "84": [
+    [null, null, null, "white", "white", null, null, null, null],
+    [null, null, "white", "white", "white", "white", null, null, null],
+    [null, "white", "white", "yellow", "yellow", "white", "white", null, null],
+    ["white", "white", "yellow", "black", "yellow", "black", "yellow", "white", null],
+    [null, null, "yellow", "yellow", "yellow", "yellow", "yellow", null, null],
+    [null, null, "black", "yellow", "yellow", "yellow", "black", null, null],
+    [null, null, "yellow", "yellow", "yellow", "yellow", "yellow", null, null],
+    [null, null, "yellow", "black", "yellow", "black", "yellow", null, null],
+    [null, null, null, null, "yellow", null, null, null, null]
+  ],
+  "85": [
+    [null, null, null, null, null, "yellow", null, null, null, null, null],
+    [null, null, null, null, "green", "green", "green", null, null, null, null],
+    [null, null, null, "green", "red", "green", "red", "green", null, null, null],
+    [null, null, "green", "green", "green", "green", "green", "green", "green", null, null],
+    [null, "green", "green", "red", "green", "green", "green", "red", "green", "green", null],
+    [null, null, "green", "green", "green", "green", "green", "green", "green", null, null],
+    ["green", "green", "green", "red", "green", "green", "green", "red", "green", "green", "green"],
+    [null, "green", "green", "green", "green", "green", "green", "green", "green", "green", null],
+    [null, null, null, null, null, "brown", null, null, null, null, null],
+    [null, null, null, null, null, "brown", null, null, null, null, null],
+    [null, null, null, null, null, "brown", null, null, null, null, null]
+  ],
+  "86": [
+    [null, null, "white", "white", "white", "white", null, null],
+    [null, "red", "white", "white", "white", "white", "blue", null],
+    [null, "red", "white", "white", "white", "white", "blue", null],
+    [null, "red", "white", "white", "white", "white", "blue", null],
+    ["red", "red", "white", "white", "white", "white", "blue", "blue"],
+    ["red", "red", "white", "white", "white", "white", "blue", "blue"],
+    [null, "red", "white", "white", "white", "white", "blue", null],
+    [null, null, "white", "white", "white", "white", null, null],
+    [null, null, null, "white", "white", null, null, null],
+    [null, null, "orange", "orange", "orange", "orange", null, null],
+    [null, "orange", "orange", "orange", "orange", "orange", "orange", null],
+    ["orange", "orange", "orange", null, null, "orange", "orange", "orange"]
+  ],
+  "87": [
+    [null, "brown", "brown", null, null, null, null, "brown", "brown", null, null],
+    ["brown", "brown", "brown", "brown", null, null, "brown", "brown", "brown", "brown", null],
+    ["brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", null],
+    ["brown", "brown", "tan", "brown", "black", "black", "brown", "tan", "brown", "brown", null],
+    ["brown", "brown", "tan", "tan", "tan", "tan", "tan", "tan", "brown", "brown", null],
+    [null, "brown", "tan", "tan", "black", "tan", "tan", "tan", "brown", null, null],
+    [null, "brown", "brown", "tan", "tan", "tan", "tan", "brown", "brown", null, null],
+    [null, null, "brown", "brown", "brown", "brown", "brown", "brown", null, null, null],
+    [null, "brown", "brown", "tan", null, null, "tan", "brown", "brown", null, null],
+    [null, "brown", "tan", "tan", null, null, "tan", "tan", "brown", null, null],
+    [null, "brown", "brown", null, null, null, null, "brown", "brown", null, null]
+  ],
+  "88": [
+    [null, null, "black", "black", "black", "black", null, null, null, null],
+    [null, "black", "black", "black", "black", "black", "black", null, null, null],
+    [null, "black", "white", "white", "white", "white", "black", null, null, null],
+    [null, null, "white", "black", "white", "black", "white", null, null, null],
+    [null, null, "white", "white", "orange", "white", "white", null, null, null],
+    ["red", "red", "red", "red", "red", "red", "red", null, null, null],
+    [null, null, "white", "white", "white", "white", "white", null, null, null],
+    [null, "white", "white", "black", "white", "black", "white", "white", null, null],
+    [null, "white", "white", "white", "white", "white", "white", "white", null, null],
+    [null, null, "white", "white", "white", "white", "white", null, null, null]
+  ],
+  "89": [
+    [null, null, null, null, "black", "black", null, null, null, null, null],
+    [null, "white", null, "black", "black", "brown", "brown", null, null, null, null],
+    [null, "brown", "brown", "black", "brown", "brown", "brown", "brown", null, null, null],
+    ["brown", "brown", "brown", "brown", "tan", "brown", "brown", "brown", "brown", null, null],
+    ["brown", "brown", "tan", "brown", "brown", "brown", "brown", "brown", "brown", "brown", null],
+    [null, "brown", "brown", "brown", "brown", "brown", "brown", "brown", "brown", null, null],
+    [null, null, "brown", "brown", "brown", "brown", "brown", "brown", null, null, null],
+    [null, null, "brown", "brown", "brown", "brown", "brown", null, null, null, null],
+    [null, "brown", "brown", null, null, "black", "black", null, null, null, null],
+    [null, "brown", null, null, null, "black", null, null, null, null, null],
+    ["brown", "brown", null, null, null, "black", null, null, null, null, null]
+  ],
+  "90": [
+    [null, "gray", "gray", "gray", "gray", "gray", "gray", "gray", "gray", null, null, null],
+    ["red", "red", "red", "red", "red", "red", "red", "red", "red", "red", "red", null],
+    ["red", "red", "red", "yellow", "red", "red", "red", "red", "red", "red", "red", "red"],
+    ["red", "red", "red", "red", "red", "red", "red", "red", "red", "red", "red", "red"],
+    ["red", "red", "red", "red", "red", "red", "red", "red", "red", "red", "red", "red"],
+    [null, "black", "gray", "black", "gray", "gray", "black", "gray", "black", "gray", "black", null],
+    [null, "black", "black", "black", "black", "black", "black", "black", "black", "black", "black", null],
+    [null, null, "gray", null, null, "gray", null, null, "gray", null, "gray", null]
+  ]
+}
