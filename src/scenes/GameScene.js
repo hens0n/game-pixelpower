@@ -39,6 +39,46 @@ const COLOR_THEMES = {
     accent: 0x63d98f,
     shadow: 0x1f6f4a,
   },
+  blue: {
+    label: 'Sky',
+    cubeTexture: 'cube-blue-top',
+    pigTexture: 'pig-blue',
+    pigTextureBack: 'pig-blue-back',
+    pigTextureLeft: 'pig-blue-left',
+    pigTextureRight: 'pig-blue-right',
+    accent: 0x77c2ff,
+    shadow: 0x163d73,
+  },
+  purple: {
+    label: 'Violet',
+    cubeTexture: 'cube-purple-top',
+    pigTexture: 'pig-purple',
+    pigTextureBack: 'pig-purple-back',
+    pigTextureLeft: 'pig-purple-left',
+    pigTextureRight: 'pig-purple-right',
+    accent: 0xb15cff,
+    shadow: 0x3f166c,
+  },
+  orange: {
+    label: 'Amber',
+    cubeTexture: 'cube-orange-top',
+    pigTexture: 'pig-orange',
+    pigTextureBack: 'pig-orange-back',
+    pigTextureLeft: 'pig-orange-left',
+    pigTextureRight: 'pig-orange-right',
+    accent: 0xff9f40,
+    shadow: 0x6d370d,
+  },
+  teal: {
+    label: 'Teal',
+    cubeTexture: 'cube-teal-top',
+    pigTexture: 'pig-teal',
+    pigTextureBack: 'pig-teal-back',
+    pigTextureLeft: 'pig-teal-left',
+    pigTextureRight: 'pig-teal-right',
+    accent: 0x2fd6c4,
+    shadow: 0x0d5b59,
+  },
 };
 
 const REVEAL_PALETTE = [
@@ -80,6 +120,7 @@ export class GameScene extends Phaser.Scene {
   constructor() {
     super('GameScene');
     this.state = null;
+    this.boardLookup = [];
     this.levelConfig = null;
     this.currentLevelIndex = 0;
     this.undoStack = [];
@@ -481,6 +522,7 @@ export class GameScene extends Phaser.Scene {
     this.activeProjectiles.forEach((projectile) => projectile.destroy());
     this.activeProjectiles = [];
     this.state = this.createInitialState();
+    this.rebuildBoardLookup();
     this.undoStack = [];
     this.selectedPig = { source: 'bench', index: this.findNextBenchColumn(0, this.state.bench) };
     this.overlay.setVisible(false);
@@ -729,8 +771,8 @@ export class GameScene extends Phaser.Scene {
           id: `cube-${cubeId}`,
           row: rowIndex,
           col: colIndex,
-          color,
-          alive: true,
+          color: color ?? 'red',
+          alive: color !== null,
           reservedBy: null,
         });
         cubeId += 1;
@@ -754,13 +796,20 @@ export class GameScene extends Phaser.Scene {
       jamWarnings: 0,
       jamLimit: 2,
       destroyedCount: 0,
-      totalCubes: board.length,
+      totalCubes: board.filter(c => c.alive).length,
       lastAction: 'Level initialized',
     };
   }
 
   cloneState(snapshot) {
     return JSON.parse(JSON.stringify(snapshot));
+  }
+
+  rebuildBoardLookup() {
+    this.boardLookup = Array.from({ length: this.gridRows }, () => Array(this.gridCols).fill(null));
+    this.state.board.forEach((cube) => {
+      this.boardLookup[cube.row][cube.col] = cube;
+    });
   }
 
   createBenchColumns(pigs) {
@@ -858,6 +907,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     this.state = this.cloneState(this.undoStack.pop());
+    this.rebuildBoardLookup();
     if (this.getBenchCount() > 0) {
       this.selectedPig = { source: 'bench', index: this.findNextBenchColumn(this.selectedPig.index) };
     } else if (this.state.queue.length > 0) {
@@ -1095,7 +1145,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   getCubeAt(row, col) {
-    return this.state.board.find((cube) => cube.row === row && cube.col === col);
+    return this.boardLookup[row]?.[col] ?? null;
   }
 
   getFirstVisibleCubeInColumn(col, rowOrder) {

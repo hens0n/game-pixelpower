@@ -18,6 +18,9 @@ const PREVIEW_COLORS = {
   yellow: 0xffd74f,
   green: 0x6be49a,
   blue: 0x77c2ff,
+  purple: 0xb15cff,
+  orange: 0xff9f40,
+  teal: 0x2fd6c4,
 };
 
 export class MenuScene extends Phaser.Scene {
@@ -99,7 +102,7 @@ export class MenuScene extends Phaser.Scene {
       fontStyle: 'bold',
     }).setOrigin(0.5);
 
-    this.add.text(width * 0.5, 286, 'Handcrafted conveyor puzzles with strict line shots, premium pixels, and more boards coming.', {
+    this.add.text(width * 0.5, 286, 'A 50-level conveyor puzzle campaign with strict line shots, premium pixels, and milestone picture boards.', {
       fontFamily: 'Trebuchet MS',
       fontSize: '28px',
       color: '#31548b',
@@ -220,6 +223,14 @@ export class MenuScene extends Phaser.Scene {
         padding: { x: 10, y: 4 },
         fontStyle: 'bold',
       }).setOrigin(0.5).setVisible(false);
+      let star = null;
+      if (level.milestone) {
+        star = this.add.text(CARD_WIDTH * 0.5 - 30, -CARD_HEIGHT * 0.5 + 10, '\u2605', {
+          fontSize: '20px',
+          color: '#ffd74f',
+        }).setOrigin(0.5).setDepth(15);
+      }
+
       const hit = this.add.zone(0, 0, CARD_WIDTH + 24, CARD_HEIGHT + 24).setInteractive({ useHandCursor: true });
 
       const select = () => {
@@ -249,12 +260,21 @@ export class MenuScene extends Phaser.Scene {
       };
 
       hit.on('pointerdown', select);
-      [hit, card, number, name, description, meta, bench, status, badge].forEach((item) => {
+      const interactiveItems = [hit, card, number, name, description, meta, bench, status, badge];
+      const clickableItems = [card, number, name, description, meta, bench, status, badge];
+      const containerItems = [shadow, card, number, name, description, meta, bench, status, badge];
+      if (star) {
+        interactiveItems.push(star);
+        clickableItems.push(star);
+        containerItems.push(star);
+      }
+      interactiveItems.forEach((item) => {
         item.on('pointerover', hoverIn);
         item.on('pointerout', hoverOut);
       });
-      [card, number, name, description, meta, bench, status, badge].forEach((item) => item.setInteractive({ useHandCursor: true }).on('pointerdown', select));
-      container.add([shadow, card, number, name, description, meta, bench, status, badge, hit]);
+      clickableItems.forEach((item) => item.setInteractive({ useHandCursor: true }).on('pointerdown', select));
+      containerItems.push(hit);
+      container.add(containerItems);
       this.levelCards.push({ pageIndex, container, shadow, card, number, name, description, meta, bench, status, badge, hit });
     });
 

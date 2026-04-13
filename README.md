@@ -7,8 +7,9 @@ Pixel Power is a browser puzzle game built with Phaser 3 and Vite. Players launc
 - Phaser 3 game runtime with Vite-based local development and production builds
 - Responsive portrait-first layout for desktop and mobile browsers
 - Level browser with paged campaign menu and board preview
-- 10 handcrafted puzzle levels with unlock progression saved in `localStorage`
+- 50-level campaign with handcrafted milestone pixel-art boards and generated progression content saved in `localStorage`
 - Core gameplay loop with bench management, return queue, undo, restart, win, and jam-loss states
+- Built-in content generation and preview tooling for candidate level curation
 - Directional pig art, premium board assets, lightweight procedural audio, and service worker registration
 
 ## Controls
@@ -45,6 +46,26 @@ Vite serves the game on `http://localhost:5173` by default.
 ```bash
 npm run build
 ```
+
+### Run Tests
+
+```bash
+npm test
+```
+
+### Generate Candidate Levels
+
+```bash
+npm run generate
+```
+
+### Preview Candidate Levels
+
+```bash
+npm run preview-levels
+```
+
+Then open `http://localhost:3000/tools/preview/` to review `output/candidates.json` and export accepted levels.
 
 ### Preview Production Build
 
