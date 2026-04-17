@@ -23,3 +23,5 @@ PRD.txt
 progress.md
 
 .superpowers/
+/Dockerfile
+/nginx.conf

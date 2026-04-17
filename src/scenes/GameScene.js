@@ -141,24 +141,9 @@ const COLOR_THEMES = {
   },
 };
 
-const REVEAL_PALETTE = [
-  0xffd89e,
-  0xffe9aa,
-  0xfff0c6,
-  0xffe3b0,
-  0xe6ffd8,
-  0xd6ffd7,
-  0xb4f4c0,
-  0xc6f7d9,
-  0x93e8bf,
-  0xffd4d4,
-  0xffbfbf,
-  0xf0d7ff,
-  0xf1c3ff,
-  0xd8f8ff,
-  0xc8f0ff,
-  0xffe0ef,
-];
+const CLEARED_PIXEL_FILL = 0x0d1830;
+const CLEARED_PIXEL_STROKE = 0x2d4d73;
+const CLEARED_PIXEL_GLOW = 0x13253f;
 
 const BOARD_AREA = {
   centerX: 540,
@@ -170,11 +155,6 @@ const BOARD_AREA = {
 const BENCH_COLUMNS = 5;
 const BENCH_VISIBLE_DEPTH = 5;
 const MAX_CELL_SIZE = 120;
-
-function buildRevealArt(layout) {
-  return layout.map((row, rowIndex) =>
-    row.map((_, colIndex) => REVEAL_PALETTE[(rowIndex * 3 + colIndex * 5) % REVEAL_PALETTE.length]));
-}
 
 export class GameScene extends Phaser.Scene {
   constructor() {
@@ -688,7 +668,6 @@ export class GameScene extends Phaser.Scene {
 
   createBoard() {
     const container = this.add.container(0, 0).setDepth(20);
-    const revealArt = buildRevealArt(this.levelConfig.layout);
     const boardWidth = this.boardBounds.right - this.boardBounds.left;
     const boardHeight = this.boardBounds.bottom - this.boardBounds.top;
     const panelWidth = boardWidth + Math.round(this.cellSize * 1.35);
@@ -712,8 +691,8 @@ export class GameScene extends Phaser.Scene {
         const y = this.boardOrigin.y + rowIndex * this.cellSize;
         const plate = this.add.rectangle(x, y, this.cubeSize + 10, this.cubeSize + 10, 0x0b1d34, 0.72)
           .setStrokeStyle(Math.max(2, Math.round(this.cellSize * 0.025)), 0x97cbff, 0.12);
-        const reveal = this.add.rectangle(x, y, this.cubeSize, this.cubeSize, revealArt[rowIndex][colIndex], 1)
-          .setStrokeStyle(Math.max(2, Math.round(this.cellSize * 0.03)), 0xffffff, 0.28);
+        const reveal = this.add.rectangle(x, y, this.cubeSize, this.cubeSize, CLEARED_PIXEL_FILL, 1)
+          .setStrokeStyle(Math.max(2, Math.round(this.cellSize * 0.03)), CLEARED_PIXEL_STROKE, 0.42);
         const underlay = this.add.rectangle(x, y + Math.round(this.cellSize * 0.05), this.cubeSize + 8, this.cubeSize + 8, 0x05101f, 0.24);
         const glow = this.add.rectangle(x, y, this.cubeSize - 10, this.cubeSize - 10, 0xffffff, 0.08);
         const cube = this.add.image(x, y, 'cube-blue-top').setDisplaySize(this.cubeDisplaySize, this.cubeDisplaySize);
@@ -1407,16 +1386,16 @@ export class GameScene extends Phaser.Scene {
       const theme = COLOR_THEMES[cube.color];
       sprite.cube.setTexture(theme.cubeTexture);
       sprite.cube.setVisible(cube.alive);
-      sprite.plate.setAlpha(cube.alive ? 0.82 : 0.28);
+      sprite.plate.setAlpha(cube.alive ? 0.82 : 0.18);
       sprite.plate.setStrokeStyle(
         Math.max(2, Math.round(this.cellSize * 0.025)),
-        cube.alive ? theme.accent : 0x97cbff,
-        cube.alive ? 0.12 : 0.05,
+        cube.alive ? theme.accent : CLEARED_PIXEL_STROKE,
+        cube.alive ? 0.12 : 0.14,
       );
-      sprite.reveal.setAlpha(cube.alive ? 0.18 : 0.94);
-      sprite.underlay.setAlpha(cube.alive ? 0.26 : 0.05);
-      sprite.glow.setAlpha(cube.alive ? 0.1 : 0.02);
-      sprite.glow.setFillStyle(theme.accent, cube.alive ? 0.1 : 0.02);
+      sprite.reveal.setAlpha(cube.alive ? 0.08 : 0.84);
+      sprite.underlay.setAlpha(cube.alive ? 0.26 : 0.12);
+      sprite.glow.setAlpha(cube.alive ? 0.1 : 0.03);
+      sprite.glow.setFillStyle(cube.alive ? theme.accent : CLEARED_PIXEL_GLOW, cube.alive ? 0.1 : 0.03);
       const displaySize = cube.alive ? this.cubeDisplaySize : this.cubeDisplaySize * 0.92;
       sprite.cube.setDisplaySize(displaySize, displaySize);
       sprite.cube.setTint(cube.alive ? 0xffffff : 0xf0fbff);

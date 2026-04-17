@@ -386,7 +386,7 @@ export const pixelArtLevels = [
   },
   {
     "id": "heart",
-    "name": "Heart",
+    "name": "Pixel Heart",
     "description": "Clear the board to reveal the pixel art!",
     "layout": [
       [
