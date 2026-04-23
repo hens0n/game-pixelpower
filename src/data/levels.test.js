@@ -1,6 +1,13 @@
 import { strict as assert } from 'node:assert';
 import { test } from 'node:test';
 import { LEVELS } from './levels.js';
+import { validateLevel } from './level-validation.js';
+
+test('every LEVELS entry passes structural validation', () => {
+  LEVELS.forEach((level, index) => {
+    assert.doesNotThrow(() => validateLevel(level, index));
+  });
+});
 
 test('LEVELS contains no duplicate layouts', () => {
   const seen = new Map();

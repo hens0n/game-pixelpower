@@ -179,6 +179,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   create(data = {}) {
+    this.events.on(Phaser.Scenes.Events.SHUTDOWN, this.handleShutdown, this);
     gameState.currentScene = 'GameScene';
     gameState.progress = 'Milestone 3 level progression';
 
@@ -812,8 +813,8 @@ export class GameScene extends Phaser.Scene {
           id: `cube-${cubeId}`,
           row: rowIndex,
           col: colIndex,
-          color: color ?? 'red',
-          alive: color !== null,
+          color,
+          alive: true,
           reservedBy: null,
         });
         cubeId += 1;
@@ -1064,7 +1065,13 @@ export class GameScene extends Phaser.Scene {
     this.overlay?.setVisible(false);
     this.levelIntro?.setVisible(false);
     syncStoredProgress();
-    window.location.assign(window.location.pathname || '/');
+    this.cameras.main.fadeOut(180, 7, 18, 33);
+    this.time.delayedCall(190, () => {
+      // scene.start doesn't stop the caller in Phaser 3, so we stop
+      // GameScene explicitly to trigger its shutdown() teardown.
+      this.scene.start('MenuScene');
+      this.scene.stop();
+    });
   }
 
   update(_, delta) {
@@ -1590,5 +1597,35 @@ export class GameScene extends Phaser.Scene {
       lastAction: this.state.lastAction,
       canUndo: this.undoStack.length > 0,
     };
+  }
+
+  handleShutdown() {
+    this.tweens?.killAll();
+    this.time?.removeAllEvents();
+    this.input?.keyboard?.removeAllListeners();
+
+    this.activeProjectiles.forEach((projectile) => projectile?.destroy());
+    this.activeProjectiles = [];
+    this.undoStack = [];
+
+    // Phaser destroys child GameObjects on scene shutdown, but the scene
+    // instance is reused, so we must drop our own references to avoid
+    // syncBench/syncQueue indexing into destroyed sprites on the next create().
+    this.boardSprites = [];
+    this.benchColumns = [];
+    this.queueSprites = [];
+    this.conveyorSprites = [];
+    this.conveyorMarkers = [];
+    this.levelContainers = [];
+    this.state = null;
+    this.boardLookup = [];
+
+    if (this.audioContext) {
+      this.audioContext.close().catch((err) => {
+        console.warn('GameScene.shutdown: audioContext close failed', err);
+      });
+      this.audioContext = null;
+      this.masterGain = null;
+    }
   }
 }

@@ -52,8 +52,10 @@ export class MenuScene extends Phaser.Scene {
   }
 
   create() {
+    this.events.on(Phaser.Scenes.Events.SHUTDOWN, this.handleShutdown, this);
     this.children.removeAll(true);
     this.input.removeAllListeners();
+    this.input.keyboard?.removeAllListeners();
     this.scale.removeAllListeners();
     this.input.enabled = true;
     this.input.topOnly = true;
@@ -609,10 +611,20 @@ export class MenuScene extends Phaser.Scene {
         const x = offsetX + colIndex * cellSize + cellSize * 0.5;
         const y = offsetY + rowIndex * cellSize + cellSize * 0.5;
         const plate = this.add.rectangle(x, y + 2, cellSize - 2, cellSize - 2, 0x0d233f, 0.95);
-        const cube = this.add.rectangle(x, y, cellSize - 4, cellSize - 4, PREVIEW_COLORS[color] ?? 0xffffff, 1).setStrokeStyle(2, 0xffffff, 0.14);
+        const fill = PREVIEW_COLORS[color];
+        if (fill === undefined) {
+          throw new Error(`MenuScene preview: unknown color "${color}" in level "${level.id}"`);
+        }
+        const cube = this.add.rectangle(x, y, cellSize - 4, cellSize - 4, fill, 1).setStrokeStyle(2, 0xffffff, 0.14);
         this.previewBoard.add([plate, cube]);
       });
     });
+  }
+
+  handleShutdown() {
+    this.tweens?.killAll();
+    this.input?.keyboard?.removeAllListeners();
+    this.scale?.removeAllListeners();
   }
 
   drawLockedPreview() {

@@ -1,4 +1,5 @@
 import { pixelArtLevels } from './pixel-art-levels.js';
+import { validateLevels } from './level-validation.js';
 
 export const LEVELS = [
   {
@@ -1234,3 +1235,5 @@ export const LEVELS = [
 ];
 
 LEVELS.push(...pixelArtLevels);
+
+validateLevels(LEVELS);
