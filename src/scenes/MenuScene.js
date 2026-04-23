@@ -404,6 +404,7 @@ export class MenuScene extends Phaser.Scene {
       color: '#31548b',
       wordWrap: { width: 530, useAdvancedWrap: true },
     }).setOrigin(0, 0.5);
+    this.previewStarRow = this.buildStarRow(180, height - 200, 14);
     this.previewBoard = this.add.container(width - 220, height - 264);
   }
 
@@ -648,6 +649,10 @@ export class MenuScene extends Phaser.Scene {
     this.previewMeta.setText(`${selectedLevel.layout.length} x ${selectedLevel.layout[0].length}\n${selectedLevel.bench.length} pigs loaded`);
     this.levelDescription.setText(selectedLevel.description);
     this.drawBoardPreview(selectedLevel);
+    this.paintStarRow(
+      this.previewStarRow,
+      isLevelCompleted(selectedIndex) ? getStarsForLevel(selectedIndex) : null,
+    );
     this.launchButton.setAlpha(1);
     this.launchButton.setText('PLAY SELECTED LEVEL');
     this.launchButton.setBackgroundColor('#ff7a45');
