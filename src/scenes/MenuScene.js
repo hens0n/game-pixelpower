@@ -4,6 +4,8 @@ import {
   getHighestUnlockedLevelIndex,
   isLevelUnlocked,
   setSelectedLevelIndex,
+  getStarsForLevel,
+  isLevelCompleted,
 } from '../state/gameState.js';
 import { LEVELS } from '../data/levels.js';
 
@@ -239,6 +241,9 @@ export class MenuScene extends Phaser.Scene {
         }).setOrigin(0.5).setDepth(15);
       }
 
+      const starRow = this.buildStarRow(35, -62, 9);
+      starRow.forEach((s) => s.setDepth(15));
+
       const hit = this.add.zone(0, 0, CARD_WIDTH + 24, CARD_HEIGHT + 24).setInteractive({ useHandCursor: true });
 
       const select = () => {
@@ -282,8 +287,9 @@ export class MenuScene extends Phaser.Scene {
       });
       clickableItems.forEach((item) => item.setInteractive({ useHandCursor: true }).on('pointerdown', select));
       containerItems.push(hit);
+      containerItems.push(...starRow);
       container.add(containerItems);
-      this.levelCards.push({ pageIndex, container, shadow, card, number, name, description, meta, bench, status, badge, hit });
+      this.levelCards.push({ pageIndex, container, shadow, card, number, name, description, meta, bench, status, badge, hit, starRow });
     });
 
     const pageCount = this.getPageCount();
@@ -442,6 +448,26 @@ export class MenuScene extends Phaser.Scene {
     return this.add.image(x, y, 'panel').setDisplaySize(width, height).setTint(tint).setAlpha(alpha);
   }
 
+  buildStarRow(x, y, size = 16) {
+    const style = { fontFamily: 'Trebuchet MS', fontSize: `${size * 1.6}px`, fontStyle: 'bold' };
+    const spacing = size * 1.4;
+    const star1 = this.add.text(x - spacing, y, '☆', { ...style, color: '#8fa7c7' }).setOrigin(0.5);
+    const star2 = this.add.text(x, y, '☆', { ...style, color: '#8fa7c7' }).setOrigin(0.5);
+    const star3 = this.add.text(x + spacing, y, '☆', { ...style, color: '#8fa7c7' }).setOrigin(0.5);
+    return [star1, star2, star3];
+  }
+
+  paintStarRow(stars, earned) {
+    stars.forEach((s, i) => {
+      if (earned === null || earned === undefined) {
+        s.setText('☆').setColor('#8fa7c7');
+      } else {
+        const filled = i < earned;
+        s.setText(filled ? '★' : '☆').setColor(filled ? '#e6c85a' : '#6d8ab0');
+      }
+    });
+  }
+
   createNavButton(x, y, label) {
     const container = this.add.container(x, y);
     const shadow = this.add.circle(0, 8, 42, 0x05111f, 0.24);
@@ -526,6 +552,12 @@ export class MenuScene extends Phaser.Scene {
         entry.badge.setAlpha(active ? 1 : 0.92);
       }
       entry.container.setScale(active && unlocked ? 1.02 : 1);
+
+      if (unlocked && isLevelCompleted(index)) {
+        this.paintStarRow(entry.starRow, getStarsForLevel(index) ?? 0);
+      } else {
+        this.paintStarRow(entry.starRow, null);
+      }
     });
 
     this.pageIndicators.forEach((entry, index) => {
