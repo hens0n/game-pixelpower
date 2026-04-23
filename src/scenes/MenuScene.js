@@ -8,6 +8,7 @@ import {
   isLevelCompleted,
 } from '../state/gameState.js';
 import { LEVELS } from '../data/levels.js';
+import { dailyLevelIndex, dailyPool, utcDateString } from '../game/daily.js';
 
 const CARDS_PER_PAGE = 6;
 const CARD_COLUMNS = 2;
@@ -101,24 +102,91 @@ export class MenuScene extends Phaser.Scene {
   }
 
   createHeader(width) {
-    this.createPanel(width * 0.5, 256, width - 120, 250, { tint: 0xfbfdff });
-    this.add.image(184, 256, 'pig-red').setDisplaySize(148, 148);
-    this.add.image(width - 184, 256, 'pig-green').setDisplaySize(148, 148).setFlipX(true);
+    this.createPanel(width * 0.5, 215, width - 120, 170, { tint: 0xfbfdff });
+    this.add.image(184, 220, 'pig-red').setDisplaySize(116, 116);
+    this.add.image(width - 184, 220, 'pig-green').setDisplaySize(116, 116).setFlipX(true);
 
-    this.add.text(width * 0.5, 208, 'PIXEL POWER', {
+    this.add.text(width * 0.5, 190, 'PIXEL POWER', {
       fontFamily: 'Trebuchet MS',
-      fontSize: '74px',
+      fontSize: '58px',
       color: '#173258',
       fontStyle: 'bold',
     }).setOrigin(0.5);
 
-    this.add.text(width * 0.5, 286, 'A 50-level conveyor puzzle campaign with strict line shots, premium pixels, and milestone picture boards.', {
+    this.add.text(width * 0.5, 250, 'A 100-level conveyor puzzle campaign with daily challenges.', {
       fontFamily: 'Trebuchet MS',
-      fontSize: '28px',
+      fontSize: '20px',
       color: '#31548b',
       align: 'center',
       wordWrap: { width: width - 320 },
     }).setOrigin(0.5);
+
+    this.createDailyCard(width);
+  }
+
+  createDailyCard(width) {
+    const today = utcDateString(Date.now());
+    const pool = dailyPool(LEVELS);
+    const index = dailyLevelIndex(today, pool);
+    this.todayDailyIndex = index;
+    this.todayDailyDate = today;
+    const playedToday = gameState.daily.lastDate === today;
+    const lastStars = gameState.daily.lastStars ?? 0;
+
+    const cardY = 360;
+    const cardW = width - 120;
+    const cardX = width * 0.5;
+    this.createPanel(cardX, cardY, cardW, 104, { tint: 0xfff3dc });
+    this.add.text(cardX - cardW * 0.5 + 30, cardY - 24, 'DAILY CHALLENGE', {
+      fontFamily: 'Trebuchet MS',
+      fontSize: '22px',
+      color: '#805a15',
+      fontStyle: 'bold',
+    }).setOrigin(0, 0.5);
+    this.add.text(cardX - cardW * 0.5 + 30, cardY + 8, today, {
+      fontFamily: 'Trebuchet MS',
+      fontSize: '18px',
+      color: '#a06540',
+    }).setOrigin(0, 0.5);
+
+    const fireLabel = `\u{1F525} ${gameState.daily.streak}`;
+    this.add.text(cardX, cardY - 10, fireLabel, {
+      fontFamily: 'Trebuchet MS',
+      fontSize: '34px',
+      color: '#d9541b',
+      fontStyle: 'bold',
+    }).setOrigin(0.5);
+    this.add.text(cardX, cardY + 22, `Best ${gameState.daily.bestStreak}`, {
+      fontFamily: 'Trebuchet MS',
+      fontSize: '14px',
+      color: '#a06540',
+    }).setOrigin(0.5);
+
+    this.dailyStarRow = this.buildStarRow(cardX + 110, cardY - 14, 9);
+    this.paintStarRow(this.dailyStarRow, playedToday ? lastStars : null);
+
+    const buttonLabel = playedToday ? 'PLAYED TODAY' : 'PLAY DAILY';
+    const button = this.add.text(cardX + cardW * 0.5 - 100, cardY, buttonLabel, {
+      fontFamily: 'Trebuchet MS',
+      fontSize: '20px',
+      color: '#ffffff',
+      backgroundColor: playedToday ? '#92a0b5' : '#d9541b',
+      padding: { x: 16, y: 10 },
+      fontStyle: 'bold',
+    }).setOrigin(0.5);
+    if (!playedToday) {
+      button.setInteractive({ useHandCursor: true });
+      button.on('pointerdown', () => this.startDailyChallenge());
+    }
+  }
+
+  startDailyChallenge() {
+    this.scene.start('GameScene', {
+      levelIndex: this.todayDailyIndex,
+      mode: 'daily',
+      dailyDate: this.todayDailyDate,
+    });
+    this.scene.stop();
   }
 
   createProgressPanel(width) {
