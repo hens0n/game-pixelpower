@@ -1,6 +1,32 @@
 import { strict as assert } from 'node:assert';
 import { test } from 'node:test';
 import { LEVELS } from './levels.js';
+import { validateLevel } from './level-validation.js';
+import { dailyPool } from '../game/daily.js';
+import { isSolvable } from '../../tools/generator/solver.js';
+
+test('daily pool contains a sensible number of levels', () => {
+  const pool = dailyPool(LEVELS);
+  assert.ok(pool.length >= 20, `expected >= 20 daily levels, got ${pool.length}`);
+  assert.ok(pool.length <= 50, `expected <= 50 daily levels, got ${pool.length}`);
+});
+
+test('every daily-pool level is solvable', () => {
+  const pool = dailyPool(LEVELS);
+  for (const i of pool) {
+    const level = LEVELS[i];
+    assert.ok(
+      isSolvable(level.layout, level.bench),
+      `daily-eligible level ${i + 1} (${level.id}) is not solvable`,
+    );
+  }
+});
+
+test('every LEVELS entry passes structural validation', () => {
+  LEVELS.forEach((level, index) => {
+    assert.doesNotThrow(() => validateLevel(level, index));
+  });
+});
 
 test('LEVELS contains no duplicate layouts', () => {
   const seen = new Map();

@@ -1,4 +1,5 @@
 import { pixelArtLevels } from './pixel-art-levels.js';
+import { validateLevels } from './level-validation.js';
 
 export const LEVELS = [
   {
@@ -1234,3 +1235,13 @@ export const LEVELS = [
 ];
 
 LEVELS.push(...pixelArtLevels);
+
+// Auto-tag daily-eligible levels: indexes 4..34 (one-based 5..35) inclusive,
+// unless a level has already set an explicit dailyEligible flag.
+LEVELS.forEach((level, i) => {
+  if (level.dailyEligible === undefined) {
+    level.dailyEligible = i >= 4 && i <= 34;
+  }
+});
+
+validateLevels(LEVELS);
