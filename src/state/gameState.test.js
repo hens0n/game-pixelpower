@@ -83,6 +83,7 @@ test('completeDaily with no prior date sets streak=1', async () => {
   assert.equal(result.bestStreak, 1);
   assert.equal(result.extended, true);
   assert.equal(result.broken, false);
+  assert.equal(result.usedGrace, false);
   assert.equal(mod.gameState.daily.streak, 1);
   assert.equal(mod.gameState.daily.lastDate, '2026-04-23');
 });
@@ -94,6 +95,7 @@ test('completeDaily same-day replay updates stars but not streak', async () => {
   const r2 = mod.completeDaily(3, '2026-04-23');
   assert.equal(r2.streak, 1);
   assert.equal(r2.extended, false);
+  assert.equal(r2.usedGrace, false);
   assert.equal(mod.gameState.daily.lastStars, 3);
 });
 
@@ -104,6 +106,7 @@ test('completeDaily next-day continues streak', async () => {
   const r2 = mod.completeDaily(2, '2026-04-24');
   assert.equal(r2.streak, 2);
   assert.equal(r2.extended, true);
+  assert.equal(r2.usedGrace, false);
 });
 
 test('completeDaily with one-day gap uses grace and extends', async () => {
@@ -113,6 +116,7 @@ test('completeDaily with one-day gap uses grace and extends', async () => {
   const r2 = mod.completeDaily(2, '2026-04-25');
   assert.equal(r2.streak, 2);
   assert.equal(r2.extended, true);
+  assert.equal(r2.usedGrace, true);
 });
 
 test('completeDaily with two-day gap breaks and resets to 1', async () => {
@@ -123,6 +127,7 @@ test('completeDaily with two-day gap breaks and resets to 1', async () => {
   assert.equal(r2.streak, 1);
   assert.equal(r2.broken, true);
   assert.equal(r2.previousStreak, 1);
+  assert.equal(r2.usedGrace, false);
 });
 
 test('completeDaily tracks bestStreak across breaks', async () => {

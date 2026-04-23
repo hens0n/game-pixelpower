@@ -159,6 +159,7 @@ export function completeDaily(stars, dateStr) {
       previousStreak,
       extended: false,
       broken: false,
+      usedGrace: false,
     };
   }
 
@@ -167,11 +168,13 @@ export function completeDaily(stars, dateStr) {
     : null;
 
   let broken = false;
+  let usedGrace = false;
   if (delta !== null && delta > 2) {
     broken = true;
     gameState.daily.streak = 1;
   } else if (delta === 1 || delta === 2) {
     gameState.daily.streak += 1;
+    usedGrace = delta === 2;
   } else if (delta === null) {
     gameState.daily.streak = 1;
   } else {
@@ -190,6 +193,7 @@ export function completeDaily(stars, dateStr) {
     previousStreak,
     extended: !broken,
     broken,
+    usedGrace,
   };
 }
 

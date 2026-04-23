@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import {
   gameState,
   getHighestUnlockedLevelIndex,
+  isLevelCompleted,
   markLevelCompleted,
   setSelectedLevelIndex,
   syncStoredProgress,
@@ -601,6 +602,9 @@ export class GameScene extends Phaser.Scene {
     this.pendingMode = null;
     this.lastWinStats = null;
     track('level_start', { levelIndex: this.currentLevelIndex, mode: this.currentMode });
+    if (this.currentMode === 'daily' && this.pendingDailyDate) {
+      track('daily_start', { levelIndex: this.currentLevelIndex, date: this.pendingDailyDate });
+    }
     this.overlay.setVisible(false);
     this.overlay.setAlpha(1);
     this.overlay.setScale(1);
@@ -1628,7 +1632,7 @@ export class GameScene extends Phaser.Scene {
         index: this.currentLevelIndex,
         number: this.currentLevelIndex + 1,
         total: LEVELS.length,
-        completed: gameState.completedLevels.includes(this.currentLevelIndex),
+        completed: isLevelCompleted(this.currentLevelIndex),
         unlockedLevelCount: gameState.unlockedLevelCount,
         id: this.levelConfig.id,
         name: this.levelConfig.name,
@@ -1700,7 +1704,6 @@ export class GameScene extends Phaser.Scene {
     });
     if (this.currentMode === 'daily' && this.pendingDailyDate) {
       const date = this.pendingDailyDate;
-      track('daily_start', { levelIndex: this.currentLevelIndex, date });
       const daily = completeDaily(stats.stars, date);
       track('daily_win', {
         levelIndex: this.currentLevelIndex,
@@ -1713,7 +1716,11 @@ export class GameScene extends Phaser.Scene {
       if (daily.broken) {
         track('streak_broken', { previousStreak: daily.previousStreak, newStreak: 1 });
       } else if (daily.extended && daily.streak > daily.previousStreak) {
-        track('streak_extended', { newStreak: daily.streak, bestStreak: daily.bestStreak, usedGrace: false });
+        track('streak_extended', {
+          newStreak: daily.streak,
+          bestStreak: daily.bestStreak,
+          usedGrace: daily.usedGrace,
+        });
       }
     }
     return stats;

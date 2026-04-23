@@ -591,7 +591,7 @@ export class MenuScene extends Phaser.Scene {
 
     this.levelCards.forEach((entry, index) => {
       const unlocked = isLevelUnlocked(index);
-      const completed = gameState.completedLevels.includes(index);
+      const completed = isLevelCompleted(index);
       const active = index === selectedIndex;
       const visible = entry.pageIndex === this.currentPage;
 
