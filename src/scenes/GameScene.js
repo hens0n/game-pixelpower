@@ -390,6 +390,16 @@ export class GameScene extends Phaser.Scene {
       color: '#16325c',
       fontStyle: 'bold',
     }).setOrigin(0.5);
+    const starStyle = { fontFamily: 'Trebuchet MS', fontSize: '60px', color: '#e6c85a', fontStyle: 'bold' };
+    const star1 = this.add.text(460, 790, '☆', starStyle).setOrigin(0.5);
+    const star2 = this.add.text(540, 790, '☆', starStyle).setOrigin(0.5);
+    const star3 = this.add.text(620, 790, '☆', starStyle).setOrigin(0.5);
+    const wastedText = this.add.text(540, 920, '', {
+      fontFamily: 'Trebuchet MS',
+      fontSize: '22px',
+      color: '#4d6b94',
+      align: 'center',
+    }).setOrigin(0.5);
     const body = this.add.text(540, 964, '', {
       fontFamily: 'Trebuchet MS',
       fontSize: '28px',
@@ -407,8 +417,13 @@ export class GameScene extends Phaser.Scene {
       target.on('pointerdown', () => this.transitionToMenu());
     });
 
+    this.overlayStars = [star1, star2, star3];
+    this.overlayWastedText = wastedText;
+
     this.overlay.add([
-      dim, panelShadow, panel, title, body,
+      dim, panelShadow, panel, title,
+      star1, star2, star3, wastedText,
+      body,
       replay.shadow, replay.rect, replay.shine, replay.text, replay.zone,
       menu.shadow, menu.rect, menu.shine, menu.text, menu.zone,
     ]);
@@ -1052,6 +1067,25 @@ export class GameScene extends Phaser.Scene {
     this.overlayTitle.setText(title);
     this.overlayBody.setText(body);
     this.overlayPrimaryButton.text.setText(hasNextLevel ? 'NEXT LEVEL' : 'PLAY AGAIN');
+
+    const isWin = this.state?.phase === 'win' && this.lastWinStats;
+    if (isWin) {
+      const { stars, wastedPigs } = this.lastWinStats;
+      this.overlayStars.forEach((s, i) => s.setText(i < stars ? '★' : '☆'));
+      this.overlayStars.forEach((s) => s.setVisible(true));
+      this.overlayWastedText.setText(
+        wastedPigs === 0
+          ? 'No pigs wasted — flawless run!'
+          : wastedPigs === 1
+            ? '1 pig wasted'
+            : `${wastedPigs} pigs wasted`,
+      );
+      this.overlayWastedText.setVisible(true);
+    } else {
+      this.overlayStars.forEach((s) => s.setVisible(false));
+      this.overlayWastedText.setVisible(false);
+    }
+
     this.overlay.setVisible(true).setAlpha(0).setScale(0.96);
     this.tweens.killTweensOf(this.overlay);
     this.tweens.add({
