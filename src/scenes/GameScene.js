@@ -5,8 +5,11 @@ import {
   markLevelCompleted,
   setSelectedLevelIndex,
   syncStoredProgress,
+  completeDaily,
 } from '../state/gameState.js';
 import { LEVELS } from '../data/levels.js';
+import { computeStars, countWastedPigs } from '../game/scoring.js';
+import { track } from '../analytics.js';
 
 const COLOR_THEMES = {
   red: {
@@ -176,6 +179,12 @@ export class GameScene extends Phaser.Scene {
     this.audioContext = null;
     this.masterGain = null;
     this.isSceneTransitioning = false;
+    this.currentMode = 'campaign';
+    this.pendingMode = null;
+    this.pendingDailyDate = null;
+    this.levelStartMs = 0;
+    this.undosUsed = 0;
+    this.lastWinStats = null;
   }
 
   create(data = {}) {
@@ -197,10 +206,15 @@ export class GameScene extends Phaser.Scene {
     const requestedLevel = Phaser.Math.Clamp(
       data.levelIndex ?? gameState.selectedLevelIndex ?? 0,
       0,
-      getHighestUnlockedLevelIndex(LEVELS.length),
+      data.mode === 'daily' ? LEVELS.length - 1 : getHighestUnlockedLevelIndex(LEVELS.length),
     );
     setSelectedLevelIndex(requestedLevel, LEVELS.length);
-    this.loadLevel(requestedLevel, `Level ${requestedLevel + 1} ready. Click a pig stack to launch from the lower dock.`);
+    this.pendingMode = data.mode === 'daily' ? 'daily' : 'campaign';
+    this.pendingDailyDate = data.dailyDate ?? null;
+    const intro = this.pendingMode === 'daily'
+      ? `DAILY ${this.pendingDailyDate ?? ''} — Level ${requestedLevel + 1} ready.`
+      : `Level ${requestedLevel + 1} ready. Click a pig stack to launch from the lower dock.`;
+    this.loadLevel(requestedLevel, intro);
   }
 
   drawBackdrop() {
@@ -566,6 +580,12 @@ export class GameScene extends Phaser.Scene {
     this.rebuildBoardLookup();
     this.undoStack = [];
     this.selectedPig = { source: 'bench', index: this.findNextBenchColumn(0, this.state.bench) };
+    this.levelStartMs = performance.now();
+    this.undosUsed = 0;
+    this.currentMode = this.pendingMode ?? 'campaign';
+    this.pendingMode = null;
+    this.lastWinStats = null;
+    track('level_start', { levelIndex: this.currentLevelIndex, mode: this.currentMode });
     this.overlay.setVisible(false);
     this.overlay.setAlpha(1);
     this.overlay.setScale(1);
@@ -888,6 +908,12 @@ export class GameScene extends Phaser.Scene {
       this.state.jamWarnings += 1;
       if (this.state.jamWarnings >= this.state.jamLimit) {
         this.state.phase = 'lose';
+        track('level_fail', {
+          levelIndex: this.currentLevelIndex,
+          mode: this.currentMode,
+          reason: 'jam',
+          durationMs: Math.round(performance.now() - this.levelStartMs),
+        });
         this.showOverlay('JAMMED', 'The conveyor maxed out twice before space opened. Undo or restart to recover.');
         this.playSfx('jam');
         this.setStatus('Conveyor jam. The run is lost.');
@@ -948,6 +974,7 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
+    const undoIndex = this.undosUsed;
     this.state = this.cloneState(this.undoStack.pop());
     this.rebuildBoardLookup();
     if (this.getBenchCount() > 0) {
@@ -958,6 +985,12 @@ export class GameScene extends Phaser.Scene {
       this.selectedPig = { source: 'bench', index: 0 };
     }
     this.overlay.setVisible(false);
+    this.undosUsed += 1;
+    track('level_undo', {
+      levelIndex: this.currentLevelIndex,
+      mode: this.currentMode,
+      undoIndex,
+    });
     this.setStatus('Last launch undone.');
     this.syncPresentation();
   }
@@ -1136,7 +1169,7 @@ export class GameScene extends Phaser.Scene {
 
     if (this.state.destroyedCount >= this.state.totalCubes) {
       this.state.phase = 'win';
-      markLevelCompleted(this.currentLevelIndex, LEVELS.length);
+      this.finalizeWin();
       const winMessage = this.currentLevelIndex < LEVELS.length - 1
         ? `Board clear. Level ${this.currentLevelIndex + 2} is now unlocked.`
         : 'The full level set is clear. Restart to replay the final premium loop.';
@@ -1151,6 +1184,12 @@ export class GameScene extends Phaser.Scene {
       && !this.hasPendingBoardResolution()
     ) {
       this.state.phase = 'lose';
+      track('level_fail', {
+        levelIndex: this.currentLevelIndex,
+        mode: this.currentMode,
+        reason: 'out_of_pigs',
+        durationMs: Math.round(performance.now() - this.levelStartMs),
+      });
       this.showOverlay('OUT OF PIGS', 'No pigs remain on the bench, in the queue, or on the conveyor before the board was cleared.');
       this.playSfx('lose');
       this.setStatus('Loss. No pigs remain.');
@@ -1295,7 +1334,7 @@ export class GameScene extends Phaser.Scene {
 
           if (this.state.destroyedCount >= this.state.totalCubes && this.state.phase === 'playing') {
             this.state.phase = 'win';
-            markLevelCompleted(this.currentLevelIndex, LEVELS.length);
+            this.finalizeWin();
             const winMessage = this.currentLevelIndex < LEVELS.length - 1
               ? `Board clear. Level ${this.currentLevelIndex + 2} is now unlocked.`
               : 'The full level set is clear. Restart to replay the final premium loop.';
@@ -1597,6 +1636,53 @@ export class GameScene extends Phaser.Scene {
       lastAction: this.state.lastAction,
       canUndo: this.undoStack.length > 0,
     };
+  }
+
+  computeRunStats() {
+    const benchRemaining = this.state.bench.reduce((sum, col) => sum + col.length, 0);
+    const queueRemaining = this.state.queue.length;
+    const conveyorRemaining = this.state.conveyor.length;
+    const remaining = benchRemaining + queueRemaining + conveyorRemaining;
+    // We compute from remaining-at-win only; no per-launch history needed.
+    const launchedHistory = [];
+    return {
+      stars: computeStars({ launchedHistory, remaining }),
+      wastedPigs: countWastedPigs({ launchedHistory, remaining }),
+      remaining,
+    };
+  }
+
+  finalizeWin() {
+    const stats = this.computeRunStats();
+    this.lastWinStats = stats;
+    markLevelCompleted(this.currentLevelIndex, LEVELS.length, stats.stars);
+    track('level_win', {
+      levelIndex: this.currentLevelIndex,
+      mode: this.currentMode,
+      stars: stats.stars,
+      wastedPigs: stats.wastedPigs,
+      undosUsed: this.undosUsed,
+      durationMs: Math.round(performance.now() - this.levelStartMs),
+    });
+    if (this.currentMode === 'daily' && this.pendingDailyDate) {
+      const date = this.pendingDailyDate;
+      track('daily_start', { levelIndex: this.currentLevelIndex, date });
+      const daily = completeDaily(stats.stars, date);
+      track('daily_win', {
+        levelIndex: this.currentLevelIndex,
+        date,
+        stars: stats.stars,
+        newStreak: daily.streak,
+        bestStreak: daily.bestStreak,
+        extended: daily.extended,
+      });
+      if (daily.broken) {
+        track('streak_broken', { previousStreak: daily.previousStreak, newStreak: 1 });
+      } else if (daily.extended && daily.streak > daily.previousStreak) {
+        track('streak_extended', { newStreak: daily.streak, bestStreak: daily.bestStreak, usedGrace: false });
+      }
+    }
+    return stats;
   }
 
   handleShutdown() {
