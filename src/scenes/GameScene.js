@@ -598,7 +598,7 @@ export class GameScene extends Phaser.Scene {
     this.selectedPig = { source: 'bench', index: this.findNextBenchColumn(0, this.state.bench) };
     this.levelStartMs = performance.now();
     this.undosUsed = 0;
-    this.currentMode = this.pendingMode ?? 'campaign';
+    this.currentMode = this.pendingMode ?? this.currentMode ?? 'campaign';
     this.pendingMode = null;
     this.lastWinStats = null;
     track('level_start', { levelIndex: this.currentLevelIndex, mode: this.currentMode });
@@ -618,6 +618,11 @@ export class GameScene extends Phaser.Scene {
   }
 
   advanceLevel() {
+    if (this.currentMode === 'daily') {
+      this.resetLevel(`DAILY ${this.pendingDailyDate ?? ''} — Level ${this.currentLevelIndex + 1} ready.`);
+      return;
+    }
+
     if (this.currentLevelIndex >= LEVELS.length - 1) {
       this.resetLevel('Final level restarted.');
       return;
@@ -876,6 +881,7 @@ export class GameScene extends Phaser.Scene {
       conveyorCapacity: 3,
       jamWarnings: 0,
       jamLimit: 2,
+      launchedHistory: [],
       destroyedCount: 0,
       totalCubes: board.filter(c => c.alive).length,
       lastAction: 'Level initialized',
@@ -974,8 +980,17 @@ export class GameScene extends Phaser.Scene {
       this.selectedPig = { source: 'bench', index: 0 };
     }
 
+    const launchId = `launch-${this.state.launchedHistory.length}`;
+    this.state.launchedHistory.push({
+      launchId,
+      color: frontPig.color,
+      initialAmmo: frontPig.initialAmmo,
+      finalAmmo: 0,
+    });
+
     this.state.conveyor.push({
       ...frontPig,
+      launchId,
       progress: 0,
       fireCooldown: 100,
       blockedCooldown: 0,
@@ -1058,7 +1073,11 @@ export class GameScene extends Phaser.Scene {
   }
 
   handlePrimaryOverlayAction() {
-    if (this.state?.phase === 'win' && this.currentLevelIndex < LEVELS.length - 1) {
+    if (
+      this.state?.phase === 'win'
+      && this.currentMode !== 'daily'
+      && this.currentLevelIndex < LEVELS.length - 1
+    ) {
       this.transitionToNextLevel();
       return;
     }
@@ -1067,7 +1086,9 @@ export class GameScene extends Phaser.Scene {
   }
 
   showOverlay(title, body) {
-    const hasNextLevel = this.state?.phase === 'win' && this.currentLevelIndex < LEVELS.length - 1;
+    const hasNextLevel = this.state?.phase === 'win'
+      && this.currentMode !== 'daily'
+      && this.currentLevelIndex < LEVELS.length - 1;
     this.overlayTitle.setText(title);
     this.overlayBody.setText(body);
     this.overlayPrimaryButton.text.setText(hasNextLevel ? 'NEXT LEVEL' : 'PLAY AGAIN');
@@ -1186,6 +1207,8 @@ export class GameScene extends Phaser.Scene {
       if (pig.progress < 1 && pig.ammo > 0) {
         return true;
       }
+
+      this.updateLaunchHistory(pig.launchId, pig.ammo);
 
       if (pig.ammo > 0) {
         returned.push({
@@ -1681,13 +1704,19 @@ export class GameScene extends Phaser.Scene {
     const queueRemaining = this.state.queue.length;
     const conveyorRemaining = this.state.conveyor.length;
     const remaining = benchRemaining + queueRemaining + conveyorRemaining;
-    // We compute from remaining-at-win only; no per-launch history needed.
-    const launchedHistory = [];
+    const launchedHistory = this.state.launchedHistory ?? [];
     return {
       stars: computeStars({ launchedHistory, remaining }),
       wastedPigs: countWastedPigs({ launchedHistory, remaining }),
       remaining,
     };
+  }
+
+  updateLaunchHistory(launchId, finalAmmo) {
+    const entry = this.state?.launchedHistory?.find((item) => item.launchId === launchId);
+    if (entry) {
+      entry.finalAmmo = finalAmmo;
+    }
   }
 
   finalizeWin() {
