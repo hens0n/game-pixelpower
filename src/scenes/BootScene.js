@@ -66,10 +66,23 @@ export class BootScene extends Phaser.Scene {
     this.load.image('cube-red', '/assets/premium/cube-red.png');
     this.load.image('cube-yellow', '/assets/premium/cube-yellow.png');
     this.load.image('cube-green', '/assets/premium/cube-green.png');
-    this.load.image('cube-blue-top', '/assets/premium/cube-blue-top-premium.png');
-    this.load.image('cube-red-top', '/assets/premium/cube-red-top-premium.png');
-    this.load.image('cube-yellow-top', '/assets/premium/cube-yellow-top-premium.png');
-    this.load.image('cube-green-top', '/assets/premium/cube-green-top-premium.png');
+    [
+      'red',
+      'yellow',
+      'green',
+      'blue',
+      'brown',
+      'pink',
+      'white',
+      'black',
+      'gray',
+      'tan',
+      'orange',
+      'purple',
+      'teal',
+    ].forEach((color) => {
+      this.load.image(`cube-${color}-top`, `/assets/premium/cube-${color}-top-premium.png`);
+    });
     this.load.image('ui-dock-card', '/assets/premium-ui/dock-card.png');
     this.load.image('ui-queue-tray', '/assets/premium-ui/queue-tray.png');
     this.load.image('ui-bench-column', '/assets/premium-ui/bench-column-card.png');

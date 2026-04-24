@@ -17,19 +17,19 @@ const CARD_HEIGHT = 158;
 const CARD_GAP_X = 438;
 const CARD_GAP_Y = 194;
 const PREVIEW_COLORS = {
-  red: 0xff6e7a,
-  yellow: 0xffd74f,
-  green: 0x6be49a,
-  blue: 0x77c2ff,
-  brown: 0x8b5a3c,
-  pink: 0xffa6cf,
-  white: 0xf2f6fb,
-  black: 0x2b2f37,
-  gray: 0x9ca3af,
-  tan: 0xe6d2ab,
-  orange: 0xffa54d,
-  purple: 0xa78bfa,
-  teal: 0x2fd6c4,
+  red: 0xed1f23,
+  yellow: 0xffaa22,
+  green: 0x7bc792,
+  blue: 0x2899e8,
+  brown: 0x7a4a24,
+  pink: 0xf099b5,
+  white: 0xd9dde0,
+  black: 0x2d3036,
+  gray: 0x898a8e,
+  tan: 0xdcbc90,
+  orange: 0xf3801e,
+  purple: 0xad28e5,
+  teal: 0x27e2c9,
 };
 
 export class MenuScene extends Phaser.Scene {
@@ -115,10 +115,10 @@ export class MenuScene extends Phaser.Scene {
 
     this.add.text(width * 0.5, 250, 'A 100-level conveyor puzzle campaign with daily challenges.', {
       fontFamily: 'Trebuchet MS',
-      fontSize: '20px',
+      fontSize: '27px',
       color: '#31548b',
       align: 'center',
-      wordWrap: { width: width - 320 },
+      wordWrap: { width: 560 },
     }).setOrigin(0.5);
 
     this.createDailyCard(width);
@@ -209,8 +209,8 @@ export class MenuScene extends Phaser.Scene {
     }).setOrigin(0.5);
     this.progressSubtext = this.add.text(width * 0.5, 548, '', {
       fontFamily: 'Trebuchet MS',
-      fontSize: '20px',
-      color: '#4f7098',
+      fontSize: '23px',
+      color: '#365d8a',
       align: 'center',
       wordWrap: { width: width - 220 },
     }).setOrigin(0.5);
@@ -264,43 +264,35 @@ export class MenuScene extends Phaser.Scene {
       }).setOrigin(0, 0.5);
       const name = this.add.text(-164, -8, level.name.toUpperCase(), {
         fontFamily: 'Trebuchet MS',
-        fontSize: '28px',
+        fontSize: '27px',
         color: '#d7ebff',
         fontStyle: 'bold',
-        wordWrap: { width: 262 },
+        wordWrap: { width: 220 },
       }).setOrigin(0, 0.5);
       const description = this.add.text(-164, 42, level.description, {
         fontFamily: 'Trebuchet MS',
-        fontSize: '18px',
-        color: '#c6dcf7',
-        wordWrap: { width: 260, useAdvancedWrap: true },
+        fontSize: '19px',
+        color: '#e5f2ff',
+        wordWrap: { width: 214, useAdvancedWrap: true },
         maxLines: 2,
       }).setOrigin(0, 0.5);
-      const meta = this.add.text(90, -18, `${level.layout.length}x${level.layout[0].length}`, {
+      const meta = this.add.text(138, -18, `${level.layout.length}x${level.layout[0].length}`, {
         fontFamily: 'Trebuchet MS',
-        fontSize: '26px',
+        fontSize: '24px',
         color: '#ffd47f',
         fontStyle: 'bold',
       }).setOrigin(0.5);
-      const bench = this.add.text(90, 20, `${level.bench.length} pigs`, {
+      const bench = this.add.text(138, 20, `${level.bench.length} pigs`, {
         fontFamily: 'Trebuchet MS',
-        fontSize: '22px',
+        fontSize: '20px',
         color: '#dfeaff',
       }).setOrigin(0.5);
-      const status = this.add.text(90, 56, '', {
+      const status = this.add.text(138, 56, '', {
         fontFamily: 'Trebuchet MS',
         fontSize: '18px',
         color: '#d7ebff',
         fontStyle: 'bold',
       }).setOrigin(0.5);
-      const badge = this.add.text(136, -54, '', {
-        fontFamily: 'Trebuchet MS',
-        fontSize: '16px',
-        color: '#173258',
-        backgroundColor: '#7fe0a0',
-        padding: { x: 10, y: 4 },
-        fontStyle: 'bold',
-      }).setOrigin(0.5).setVisible(false);
       let star = null;
       if (level.milestone) {
         star = this.add.text(CARD_WIDTH * 0.5 - 30, -CARD_HEIGHT * 0.5 + 10, '\u2605', {
@@ -341,9 +333,9 @@ export class MenuScene extends Phaser.Scene {
       };
 
       hit.on('pointerdown', select);
-      const interactiveItems = [hit, card, number, name, description, meta, bench, status, badge];
-      const clickableItems = [card, number, name, description, meta, bench, status, badge];
-      const containerItems = [shadow, card, number, name, description, meta, bench, status, badge];
+      const interactiveItems = [hit, card, number, name, description, meta, bench, status];
+      const clickableItems = [card, number, name, description, meta, bench, status];
+      const containerItems = [shadow, card, number, name, description, meta, bench, status];
       if (star) {
         interactiveItems.push(star);
         clickableItems.push(star);
@@ -357,7 +349,7 @@ export class MenuScene extends Phaser.Scene {
       containerItems.push(hit);
       containerItems.push(...starRow);
       container.add(containerItems);
-      this.levelCards.push({ pageIndex, container, shadow, card, number, name, description, meta, bench, status, badge, hit, starRow });
+      this.levelCards.push({ pageIndex, container, shadow, card, number, name, description, meta, bench, status, hit, starRow });
     });
 
     const pageCount = this.getPageCount();
@@ -423,7 +415,7 @@ export class MenuScene extends Phaser.Scene {
       'Tap a board to select it. Swipe the browser to change pages. Press Enter to launch.',
       {
         fontFamily: 'Trebuchet MS',
-        fontSize: '22px',
+        fontSize: '24px',
         color: '#dfeaff',
         align: 'center',
         wordWrap: { width: width - 180 },
@@ -609,17 +601,12 @@ export class MenuScene extends Phaser.Scene {
       );
       entry.shadow.setAlpha(active ? 0.38 : 0.25);
       entry.number.setColor(!unlocked ? '#8fa7c7' : active ? '#173258' : '#f6fbff');
-      entry.name.setColor(!unlocked ? '#748dab' : active ? '#31548b' : '#d7ebff');
-      entry.description.setColor(!unlocked ? '#667f9d' : active ? '#48698f' : '#c6dcf7');
+      entry.name.setColor(!unlocked ? '#a9c4e5' : active ? '#31548b' : '#d7ebff');
+      entry.description.setColor(!unlocked ? '#9bb6d8' : active ? '#31548b' : '#e5f2ff');
       entry.meta.setColor(!unlocked ? '#8fa7c7' : active ? '#ff8b4d' : '#ffd47f');
       entry.bench.setColor(!unlocked ? '#8fa7c7' : active ? '#305280' : '#dfeaff');
       entry.status.setColor(!unlocked ? '#8fa7c7' : completed ? '#7fe0a0' : active ? '#b4491f' : '#d7ebff');
       entry.status.setText(!unlocked ? 'LOCKED' : completed ? 'CLEARED' : 'READY');
-      entry.badge.setVisible(completed);
-      if (completed) {
-        entry.badge.setText('CLEAR');
-        entry.badge.setAlpha(active ? 1 : 0.92);
-      }
       entry.container.setScale(active && unlocked ? 1.02 : 1);
 
       if (unlocked && isLevelCompleted(index)) {
@@ -713,14 +700,20 @@ export class MenuScene extends Phaser.Scene {
 
     level.layout.forEach((row, rowIndex) => {
       row.forEach((color, colIndex) => {
+        if (color === null) return;
         const x = offsetX + colIndex * cellSize + cellSize * 0.5;
         const y = offsetY + rowIndex * cellSize + cellSize * 0.5;
-        const plate = this.add.rectangle(x, y + 2, cellSize - 2, cellSize - 2, 0x0d233f, 0.95);
         const fill = PREVIEW_COLORS[color];
         if (fill === undefined) {
           throw new Error(`MenuScene preview: unknown color "${color}" in level "${level.id}"`);
         }
-        const cube = this.add.rectangle(x, y, cellSize - 4, cellSize - 4, fill, 1).setStrokeStyle(2, 0xffffff, 0.14);
+        const textureKey = `cube-${color}-top`;
+        if (!this.textures.exists(textureKey)) {
+          throw new Error(`MenuScene preview: missing cube texture "${textureKey}"`);
+        }
+        const plate = this.add.rectangle(x, y + 1, cellSize - 1, cellSize - 1, 0x0d233f, 0.72)
+          .setStrokeStyle(1, fill, 0.12);
+        const cube = this.add.image(x, y, textureKey).setDisplaySize(cellSize - 2, cellSize - 2);
         this.previewBoard.add([plate, cube]);
       });
     });

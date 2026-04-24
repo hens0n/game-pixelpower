@@ -20,7 +20,7 @@ const COLOR_THEMES = {
     pigTextureBack: 'pig-red-back',
     pigTextureLeft: 'pig-red-left',
     pigTextureRight: 'pig-red-right',
-    accent: 0xff6b6b,
+    accent: 0xed1f23,
     shadow: 0x7d2534,
   },
   yellow: {
@@ -30,7 +30,7 @@ const COLOR_THEMES = {
     pigTextureBack: 'pig-yellow-back',
     pigTextureLeft: 'pig-yellow-left',
     pigTextureRight: 'pig-yellow-right',
-    accent: 0xffd34d,
+    accent: 0xffaa22,
     shadow: 0x7f6214,
   },
   green: {
@@ -40,7 +40,7 @@ const COLOR_THEMES = {
     pigTextureBack: 'pig-green-back',
     pigTextureLeft: 'pig-green-left',
     pigTextureRight: 'pig-green-right',
-    accent: 0x63d98f,
+    accent: 0x7bc792,
     shadow: 0x1f6f4a,
   },
   blue: {
@@ -50,7 +50,7 @@ const COLOR_THEMES = {
     pigTextureBack: 'pig-blue-back',
     pigTextureLeft: 'pig-blue-left',
     pigTextureRight: 'pig-blue-right',
-    accent: 0x77c2ff,
+    accent: 0x2899e8,
     shadow: 0x163d73,
   },
   brown: {
@@ -60,7 +60,7 @@ const COLOR_THEMES = {
     pigTextureBack: 'pig-brown-back',
     pigTextureLeft: 'pig-brown-left',
     pigTextureRight: 'pig-brown-right',
-    accent: 0x8b5a3c,
+    accent: 0x7a4a24,
     shadow: 0x3b2113,
   },
   pink: {
@@ -70,7 +70,7 @@ const COLOR_THEMES = {
     pigTextureBack: 'pig-pink-back',
     pigTextureLeft: 'pig-pink-left',
     pigTextureRight: 'pig-pink-right',
-    accent: 0xffa6cf,
+    accent: 0xf099b5,
     shadow: 0x7d2d57,
   },
   white: {
@@ -80,7 +80,7 @@ const COLOR_THEMES = {
     pigTextureBack: 'pig-white-back',
     pigTextureLeft: 'pig-white-left',
     pigTextureRight: 'pig-white-right',
-    accent: 0xf2f6fb,
+    accent: 0xd9dde0,
     shadow: 0x7d8b99,
   },
   black: {
@@ -90,7 +90,7 @@ const COLOR_THEMES = {
     pigTextureBack: 'pig-black-back',
     pigTextureLeft: 'pig-black-left',
     pigTextureRight: 'pig-black-right',
-    accent: 0x2b2f37,
+    accent: 0x2d3036,
     shadow: 0x080b10,
   },
   gray: {
@@ -100,7 +100,7 @@ const COLOR_THEMES = {
     pigTextureBack: 'pig-gray-back',
     pigTextureLeft: 'pig-gray-left',
     pigTextureRight: 'pig-gray-right',
-    accent: 0x9ca3af,
+    accent: 0x898a8e,
     shadow: 0x47505c,
   },
   tan: {
@@ -110,7 +110,7 @@ const COLOR_THEMES = {
     pigTextureBack: 'pig-tan-back',
     pigTextureLeft: 'pig-tan-left',
     pigTextureRight: 'pig-tan-right',
-    accent: 0xe6d2ab,
+    accent: 0xdcbc90,
     shadow: 0x7b6541,
   },
   orange: {
@@ -120,7 +120,7 @@ const COLOR_THEMES = {
     pigTextureBack: 'pig-orange-back',
     pigTextureLeft: 'pig-orange-left',
     pigTextureRight: 'pig-orange-right',
-    accent: 0xffa54d,
+    accent: 0xf3801e,
     shadow: 0x7f4a14,
   },
   purple: {
@@ -130,7 +130,7 @@ const COLOR_THEMES = {
     pigTextureBack: 'pig-purple-back',
     pigTextureLeft: 'pig-purple-left',
     pigTextureRight: 'pig-purple-right',
-    accent: 0xa78bfa,
+    accent: 0xad28e5,
     shadow: 0x4a2d8a,
   },
   teal: {
@@ -140,7 +140,7 @@ const COLOR_THEMES = {
     pigTextureBack: 'pig-teal-back',
     pigTextureLeft: 'pig-teal-left',
     pigTextureRight: 'pig-teal-right',
-    accent: 0x2fd6c4,
+    accent: 0x27e2c9,
     shadow: 0x0d5b59,
   },
 };
@@ -268,9 +268,6 @@ export class GameScene extends Phaser.Scene {
   }
 
   createControls() {
-    this.resetButton = this.createButton(906, 116, 200, 74, 0x597093, 'RESET');
-    this.resetButton.zone.on('pointerdown', () => this.resetLevel('Level restarted.'));
-
     this.add.text(540, 1110, 'Click a bench or queue pig to select it, then click it again to launch. Enter or U undoes.', {
       fontFamily: 'Trebuchet MS',
       fontSize: '20px',
@@ -664,7 +661,7 @@ export class GameScene extends Phaser.Scene {
       Math.floor(BOARD_AREA.height / this.gridRows),
     );
     this.cubeSize = this.cellSize;
-    this.cubeDisplaySize = this.cubeSize * 0.96;
+    this.cubeDisplaySize = this.cubeSize * 0.94;
     this.boardOrigin = {
       x: BOARD_AREA.centerX - ((this.gridCols - 1) * this.cellSize) / 2,
       y: BOARD_AREA.centerY - ((this.gridRows - 1) * this.cellSize) / 2,
@@ -734,12 +731,12 @@ export class GameScene extends Phaser.Scene {
         if (cellColor === null) return;
         const x = this.boardOrigin.x + colIndex * this.cellSize;
         const y = this.boardOrigin.y + rowIndex * this.cellSize;
-        const plate = this.add.rectangle(x, y, this.cubeSize + 10, this.cubeSize + 10, 0x0b1d34, 0.72)
-          .setStrokeStyle(Math.max(2, Math.round(this.cellSize * 0.025)), 0x97cbff, 0.12);
+        const plate = this.add.rectangle(x, y, this.cubeSize + 4, this.cubeSize + 4, 0x0b1d34, 0.56)
+          .setStrokeStyle(Math.max(1, Math.round(this.cellSize * 0.014)), 0x97cbff, 0.1);
         const reveal = this.add.rectangle(x, y, this.cubeSize, this.cubeSize, CLEARED_PIXEL_FILL, 1)
           .setStrokeStyle(Math.max(2, Math.round(this.cellSize * 0.03)), CLEARED_PIXEL_STROKE, 0.42);
-        const underlay = this.add.rectangle(x, y + Math.round(this.cellSize * 0.05), this.cubeSize + 8, this.cubeSize + 8, 0x05101f, 0.24);
-        const glow = this.add.rectangle(x, y, this.cubeSize - 10, this.cubeSize - 10, 0xffffff, 0.08);
+        const underlay = this.add.rectangle(x, y + Math.round(this.cellSize * 0.035), this.cubeSize + 4, this.cubeSize + 4, 0x05101f, 0.18);
+        const glow = this.add.rectangle(x, y, this.cubeSize - 14, this.cubeSize - 14, 0xffffff, 0.07);
         const cube = this.add.image(x, y, 'cube-blue-top').setDisplaySize(this.cubeDisplaySize, this.cubeDisplaySize);
         container.add([plate, underlay, reveal, glow, cube]);
         this.boardSprites.push({ plate, reveal, underlay, glow, cube });
@@ -1334,18 +1331,21 @@ export class GameScene extends Phaser.Scene {
     return 'bottom';
   }
 
-  getPigTextureForSide(color, side) {
+  getPigRenderForSide(color, side) {
     const theme = COLOR_THEMES[color];
     switch (side) {
       case 'bottom':
-        return theme.pigTextureBack;
+        return { texture: theme.pigTextureBack, flipX: false };
       case 'right':
-        return theme.pigTextureLeft;
+        return { texture: theme.pigTextureLeft, flipX: false };
       case 'left':
-        return theme.pigTextureRight;
+        if (color === 'yellow') {
+          return { texture: theme.pigTextureLeft, flipX: true };
+        }
+        return { texture: theme.pigTextureRight, flipX: false };
       case 'top':
       default:
-        return theme.pigTexture;
+        return { texture: theme.pigTexture, flipX: false };
     }
   }
 
@@ -1589,19 +1589,20 @@ export class GameScene extends Phaser.Scene {
       const point = this.getPointOnPath(pig.progress);
       const side = this.getConveyorSide(pig.progress);
       const displaySize = this.getConveyorPigDisplaySize(side);
+      const render = this.getPigRenderForSide(pig.color, side);
       slot.glow.setVisible(true).setPosition(point.x, point.y + 18).setFillStyle(COLOR_THEMES[pig.color].accent, 0.2);
       slot.pig
         .setVisible(true)
-        .setTexture(this.getPigTextureForSide(pig.color, side))
+        .setTexture(render.texture)
         .setPosition(point.x, point.y)
         .setDisplaySize(displaySize.width, displaySize.height)
+        .setFlipX(render.flipX)
         .setAngle(0);
       slot.ammo.setVisible(true).setPosition(point.x, point.y + this.ammoOffsetY).setText(`x${pig.ammo}`);
     });
   }
 
   syncButtons() {
-    this.setButtonState(this.resetButton, true);
   }
 
   setButtonState(button, enabled) {
